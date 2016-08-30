@@ -1,0 +1,24 @@
+{
+  "name": "utfstring",
+  "version": "1.0.0",
+  "description": "UTF-safe string operations",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:camertron/utfstring.git"
+  },
+  "keywords": [
+    "unicode",
+    "string",
+    "utf-16",
+    "utf"
+  ],
+  "author": "Cameron Dutro",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/camertron/utfstring/issues"
+  },
+  "homepage": "https://github.com/camertron/utfstring",
+  "dependencies": {
+    "jasmine-node": "^1.14.5"
+  }
+}
