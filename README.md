@@ -1,10 +1,9 @@
 utfstring
 ===
---
 
 UTF-safe string operations for Javascript.
 
-### What is this thing?
+## What is this thing?
 
 Javascript strings work great for holding text in English and other Latin-based languages, but they fall short when it comes to languages in Unicode's [astral plane](https://en.wikipedia.org/wiki/Plane_(Unicode)).
 
@@ -16,15 +15,15 @@ var len = str.length;
 ```
 If you said `1`, you're clearly a hopeful idealist. In fact, `len` contains `2`. To explain why this is, we need to understand a few things about the Unicode standard.
 
-#### Some History
+### Some History
 
 Unicode isn't all that complicated. It's just a huge series of numbers, called "codepoints," one for each logical character. Unicode includes character sets for ideographic languages like Chinese, nearly [1,800 emojis](http://unicode.org/emoji/charts/full-emoji-list.html), and characters for scripts like Cherokee, Amharic, Greek, and Georgian (just to name a few). There are literally hundreds of thousands of characters specified in the Unicode standard.
 
-##### Encoding
+#### Encoding
 
 Encoding is the process of converting Unicode codepoints into binary data that can be written or transmitted by a computer system. Javascript strings are encoded in UTF-16, meaning every character takes up 16 bits, or 2 bytes (there are 8 bits per byte). The problem is that not every Unicode character can be encoded in 2 bytes, since 2<sup>16</sup> is only 65536 - not nearly enough space to represent each of the hundreds of thousands of Unicode characters.
 
-##### Javascript's Solution
+#### Javascript's Solution
 
 To mitigate this problem, Javascript (as well as other languages and platforms that use UTF-16 encoding) makes use of what are called "surrogate pairs." Surrogate pairs are two encoded characters that represent a single logical character. Together they are 4 bytes wide and can represent every Unicode character (2<sup>32</sup> = 4,294,967,296).
 
@@ -34,7 +33,7 @@ Javascript's inability to correctly count surrogate pairs means a bunch of its s
 
 This library contains a number of UTF-safe string operations, including the ones I just mentioned. These operations respect surrogate pairs to ensure you're not caught off guard.
 
-### Installation
+## Installation
 
 UtfString is designed to be used in node.js or in the browser.
 
@@ -46,7 +45,7 @@ var UtfString = require('utfstring.js').UtfString;
 
 In the browser, `UtfString` will be available on `window`.
 
-### Usage
+## Usage
 
 UtfString currently supports the following string operations:
 
@@ -74,18 +73,17 @@ UtfString currently supports the following string operations:
 
 * `bytesToString(Array arr)` - Converts an array of UTF-16 bytes into a string.
 
-### Running Tests
+## Running Tests
 
 Tests are written in Jasmine and can be executed via [jasmine-node](https://github.com/mhevery/jasmine-node):
 
 1. `npm install -g jasmine-node`
 2. `jasmine-node spec`
 
-### Authors
+## Authors
 
 Written and maintained by Cameron C. Dutro ([@camertron](https://github.com/camertron)).
 
-
-### License
+## License
 
 Copyright 2016 Cameron Dutro, licensed under the MIT license.
