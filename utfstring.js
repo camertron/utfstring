@@ -118,6 +118,69 @@
       return this._findCharIndex(string, string.length);
     },
 
+    stringToCodePoints: function(string) {
+      var result = [];
+
+      for (var i = 0; i < string.length; i ++) {
+        codePoint = this.charCodeAt(string, i);
+
+        if (!codePoint) {
+          break;
+        }
+
+        result.push(codePoint);
+      }
+
+      return result;
+    },
+
+    codePointsToString: function(arr) {
+      var chars = [];
+
+      for (var i = 0; i < arr.length; i ++) {
+        chars.push(this.fromCharCode(arr[i]));
+      }
+
+      return chars.join('');
+    },
+
+    stringToBytes: function(string) {
+      var result = [];
+
+      for (var i = 0; i < string.length; i ++) {
+        var chr = string.charCodeAt(i);
+        var byteArray = [];
+
+        while (chr > 0) {
+          byteArray.push(chr & 0xFF);
+          chr >>= 8;
+        }
+
+        // all utf-16 characters are two bytes
+        if (byteArray.length == 1) {
+          byteArray.push(0);
+        }
+
+        // assume big-endian
+        result = result.concat(byteArray.reverse());
+      }
+
+      return result;
+    },
+
+    bytesToString: function(arr) {
+      var result = [];
+
+      for (var i = 0; i < arr.length; i += 2) {
+        var hi = arr[i];
+        var low = arr[i + 1];
+        var combined = (hi << 8) | low;
+        result.push(String.fromCharCode(combined));
+      }
+
+      return result.join('');
+    },
+
     _findCharIndex: function(string, byteIndex) {
       // optimization: don't iterate unless necessary
       if (!this._containsSurrogatePair(string)) {
@@ -174,7 +237,7 @@
 
   if (typeof exports !== 'undefined' && exports !== null) {
     root = exports;
-  } else {
+  } else if (typeof window !== 'undefined' && window !== null) {
     root = window;
   }
 

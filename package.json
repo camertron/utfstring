@@ -18,7 +18,7 @@
     "url": "https://github.com/camertron/utfstring/issues"
   },
   "homepage": "https://github.com/camertron/utfstring",
-  "dependencies": {
+  "devDependencies": {
     "jasmine-node": "^1.14.5"
   }
 }
