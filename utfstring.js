@@ -1,23 +1,24 @@
 (function() {
   var UtfString = {
     charAt: function(string, index) {
-      var byteIndex = this._findByteIndex(string, index);
+      var byteIndex = this._findCharacterByteIndex(string, index);
 
       if ((byteIndex < 0) || (byteIndex >= string.length)) {
         return '';
       }
 
-      var code = string.charCodeAt(byteIndex);
+      var characters = string.slice(byteIndex, byteIndex + 8);
+      var match = unsupportedPairs.exec(characters);
 
-      if ((0xD800 <= code) && (code <= 0xDBFF)) {
-        return string.slice(byteIndex, byteIndex + 2);
+      if (match === null) {
+        return characters[0];
       } else {
-        return string[byteIndex];
+        return match[0];
       }
     },
 
     charCodeAt: function(string, index) {
-      var byteIndex = this._findByteIndex(string, index);
+      var byteIndex = this._findSurrogateByteIndex(string, index);
 
       if (byteIndex < 0) {
         return NaN;
@@ -51,7 +52,7 @@
         start = 0;
       }
 
-      var startByteIndex = this._findByteIndex(string, start);
+      var startByteIndex = this._findCharacterByteIndex(string, start);
       var index = string.indexOf(searchValue, startByteIndex);
 
       if (index < 0) {
@@ -67,7 +68,7 @@
       if ((typeof start === 'undefined') || (start === null)) {
         index = string.lastIndexOf(searchValue);
       } else {
-        var startByteIndex = this._findByteIndex(string, start);
+        var startByteIndex = this._findCharacterByteIndex(string, start);
         index = string.lastIndexOf(searchValue, startByteIndex);
       }
 
@@ -79,7 +80,7 @@
     },
 
     slice: function(string, start, finish) {
-      var startByteIndex = this._findByteIndex(string, start);
+      var startByteIndex = this._findCharacterByteIndex(string, start);
       var finishByteIndex;
 
       if (startByteIndex < 0) {
@@ -89,7 +90,7 @@
       if ((typeof finish === 'undefined') || (finish === null)) {
         finishByteIndex = string.length;
       } else {
-        finishByteIndex = this._findByteIndex(string, finish);
+        finishByteIndex = this._findCharacterByteIndex(string, finish);
 
         if (finishByteIndex < 0) {
           finishByteIndex = string.length;
@@ -183,15 +184,16 @@
 
     _findCharIndex: function(string, byteIndex) {
       // optimization: don't iterate unless necessary
-      if (!this._containsSurrogatePair(string)) {
+      if (!this._containsUnsupportedCharacters(string)) {
         return byteIndex;
       }
 
-      var re = /[\uD800-\uDBFF][\uDC00-\uDFFF]|./g;
+      var regStr = unsupportedPairs.source + '|.';
+      var scanner = new RegExp(regStr, 'g');
       var charCount = 0;
 
-      while (re.exec(string) != null) {
-        if (re.lastIndex > byteIndex) {
+      while (scanner.exec(string) != null) {
+        if (scanner.lastIndex > byteIndex) {
           break;
         }
 
@@ -201,37 +203,62 @@
       return charCount;
     },
 
-    _findByteIndex: function(string, charIndex) {
+    _findCharacterByteIndex: function(string, charIndex) {
+      return this._scan(string, this._createScanner(), charIndex);
+    },
+
+    _findSurrogateByteIndex: function(string, charIndex) {
+      return this._scan(string, new RegExp(surrogatePairs.source, 'g'), charIndex);
+    },
+
+    _scan: function(string, scanner, charIndex) {
       // optimization: don't iterate unless it's necessary
-      if (!this._containsSurrogatePair(string)) {
+      if (!this._containsUnsupportedCharacters(string)) {
         return charIndex;
       }
 
-      var length = string.length;
-      var surrogatePairs = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g;
+      var byteIndex = 0;
+      var charCount = 0;
 
-      while (surrogatePairs.exec(string) != null) {
-        var li = surrogatePairs.lastIndex;
+      do {
+        var match = scanner.exec(string);
 
-        if (li - 2 < charIndex) {
-          charIndex ++;
+        if (match === null) {
+          break;
+        }
+
+        if (charCount < charIndex) {
+          byteIndex += match[0].length;
+          charCount ++;
         } else {
           break;
         }
-      }
+      } while (match !== null);
 
-      if ((charIndex >= length) || (charIndex < 0)) {
+      if (byteIndex >= string.length) {
         return -1;
       }
 
-      return charIndex;
+      return byteIndex;
     },
 
-    _containsSurrogatePair: function(string) {
-      var surrogatePairs = /[\uD800-\uDBFF][\uDC00-\uDFFF]/;
-      return surrogatePairs.test(string);
+    _containsUnsupportedCharacters: function(string) {
+      return unsupportedPairs.test(string);
+    },
+
+    _createScanner: function(modifiers) {
+      if ((typeof modifiers === 'undefined') || (modifiers === null)) {
+        modifiers = '';
+      }
+
+      var regStr = [regionalIndicatorPairs.source, surrogatePairs.source].join('|');
+      return new RegExp(regStr, modifiers);
     }
   };
+
+  var surrogatePairs = /[\uD800-\uDBFF][\uDC00-\uDFFF]/;
+  var regionalIndicatorPairs = /\uD83C[\uDDE6-\uDDFF]\uD83C[\uDDE6-\uDDFF]/;
+  var unsupportedPairs = UtfString._createScanner();
 
   var root;
 

@@ -19,5 +19,9 @@ describe('UtfString', function() {
     it('works with astral plane unicode characters', function() {
       expect(UtfString.fromCharCode(148771)).toEqual('𤔣');
     });
+
+    it('works with regional indicators', function() {
+      expect(UtfString.fromCharCode(127467)).toEqual('🇫');
+    });
   });
 });
