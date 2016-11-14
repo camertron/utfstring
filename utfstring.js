@@ -182,6 +182,24 @@
       return result.join('');
     },
 
+    stringToCharArray: function(string) {
+      var result = [];
+      var regStr = unsupportedPairs.source + '|.';
+      var scanner = new RegExp(regStr, 'g');
+
+      do {
+        var match = scanner.exec(string);
+
+        if (match === null) {
+          break;
+        }
+
+        result.push(match[0]);
+      } while(match !== null);
+
+      return result;
+    },
+
     _findCharIndex: function(string, byteIndex) {
       // optimization: don't iterate unless necessary
       if (!this._containsUnsupportedCharacters(string)) {
@@ -192,7 +210,7 @@
       var scanner = new RegExp(regStr, 'g');
       var charCount = 0;
 
-      while (scanner.exec(string) != null) {
+      while (scanner.exec(string) !== null) {
         if (scanner.lastIndex > byteIndex) {
           break;
         }
