@@ -34,6 +34,16 @@ describe('UtfString', function() {
       expect(UtfString.indexOf(str, '𤔦')).toEqual(3);
     });
 
+    it('works with regional indicators', function() {
+      var str = '🇸🇴🇫🇷';
+      expect(UtfString.indexOf(str, '🇸🇴')).toEqual(0);
+      expect(UtfString.indexOf(str, '🇫🇷')).toEqual(1);
+      expect(UtfString.indexOf(str, '🇸')).toEqual(0);
+      expect(UtfString.indexOf(str, '🇴')).toEqual(0);
+      expect(UtfString.indexOf(str, '🇫')).toEqual(1);
+      expect(UtfString.indexOf(str, '🇷')).toEqual(1);
+    });
+
     it('works with mixed characters', function() {
       var str = 'あaりbがc𤔣dとeうf';
       expect(UtfString.indexOf(str, 'a')).toEqual(1);

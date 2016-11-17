@@ -112,5 +112,36 @@ describe('UtfString', function() {
         expect(UtfString.substr(str, -5, 1)).toEqual('');
       });
     });
+
+    describe('with regional indicators', function() {
+      var str = '🇸🇴🇫🇷';
+
+      it('works when given a start and a length', function() {
+        expect(UtfString.substr(str, 0, 1)).toEqual('🇸🇴');
+        expect(UtfString.substr(str, 1, 1)).toEqual('🇫🇷');
+      });
+
+      it('works when not given a length', function() {
+        expect(UtfString.substr(str, 0)).toEqual('🇸🇴🇫🇷');
+        expect(UtfString.substr(str, 1)).toEqual('🇫🇷');
+      });
+
+      it('returns an empty string if given an out-of-bounds start', function() {
+        expect(UtfString.substr(str, 4, 1)).toEqual('');
+      });
+
+      it('returns up to the length of the string if given an out-of-bounds length', function() {
+        expect(UtfString.substr(str, 1, 10)).toEqual('🇫🇷');
+      });
+
+      it('accepts a negative start value', function() {
+        expect(UtfString.substr(str, -1, 1)).toEqual('🇫🇷');
+        expect(UtfString.substr(str, -2, 1)).toEqual('🇸🇴');
+      });
+
+      it('returns an empty string if the negative start value is out-of-bounds', function() {
+        expect(UtfString.substr(str, -3, 1)).toEqual('');
+      });
+    });
   });
 });

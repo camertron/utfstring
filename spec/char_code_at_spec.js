@@ -23,5 +23,11 @@ describe('UtfString', function() {
       expect(UtfString.charCodeAt(str, 0)).toEqual(148771);
       expect(UtfString.charCodeAt(str, 1)).toBeNaN();
     });
+
+    it('works with regional indicators', function() {
+      var str = '🇫🇷';
+      expect(UtfString.charCodeAt(str, 0)).toEqual(127467);
+      expect(UtfString.charCodeAt(str, 1)).toEqual(127479);
+    });
   });
 });
