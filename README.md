@@ -73,6 +73,8 @@ UtfString currently supports the following string operations:
 
 * `bytesToString(Array arr)` - Converts an array of UTF-16 bytes into a string.
 
+* `stringToCharArray(String str)` - Converts the given string into an array of invidivual logical characters. Note that each entry in the returned array may be more than one UTF-16 character.
+
 ## Running Tests
 
 Tests are written in Jasmine and can be executed via [jasmine-node](https://github.com/mhevery/jasmine-node):
