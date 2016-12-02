@@ -40,7 +40,7 @@ UtfString is designed to be used in node.js or in the browser.
 In node:
 
 ```javascript
-var UtfString = require('utfstring.js').UtfString;
+var UtfString = require('utfstring');
 ```
 
 In the browser, `UtfString` will be available on `window`.

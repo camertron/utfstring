@@ -1,4 +1,4 @@
-var UtfString = require('../utfstring.js').UtfString;
+var UtfString = require('../utfstring.js');
 
 describe('UtfString', function() {
   describe('#bytesToString', function() {
