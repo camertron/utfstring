@@ -11,8 +11,41 @@
     UtfString = window.UtfString;
   }
 
+  UtfString.findCharIndex = function(string, byteIndex) {
+    if (byteIndex >= string.length) {
+      return -1;
+    }
+
+    // optimization: don't iterate unless necessary
+    if (!containsUnsupportedCharacters(string)) {
+      return byteIndex;
+    }
+
+    var regStr = unsupportedPairs.source + '|.';
+    var scanner = new RegExp(regStr, 'g');
+    var charCount = 0;
+
+    while (scanner.exec(string) !== null) {
+      if (scanner.lastIndex > byteIndex) {
+        break;
+      }
+
+      charCount ++;
+    }
+
+    return charCount;
+  };
+
+  UtfString.findByteIndex = function(string, charIndex) {
+    if (charIndex >= this.length(string)) {
+      return -1;
+    }
+
+    return scan(string, createScanner(), charIndex);
+  };
+
   UtfString.charAt = function(string, index) {
-    var byteIndex = findCharacterByteIndex(string, index);
+    var byteIndex = this.findByteIndex(string, index);
 
     if ((byteIndex < 0) || (byteIndex >= string.length)) {
       return '';
@@ -26,7 +59,7 @@
     } else {
       return match[0];
     }
-  }
+  };
 
   UtfString.charCodeAt = function(string, index) {
     var byteIndex = findSurrogateByteIndex(string, index);
@@ -44,7 +77,7 @@
     }
 
     return code;
-  }
+  };
 
   UtfString.fromCharCode = function(charCode) {
     if (charCode > 0xFFFF) {
@@ -56,22 +89,22 @@
     } else {
       return String.fromCharCode(charCode);
     }
-  }
+  };
 
   UtfString.indexOf = function(string, searchValue, start) {
     if ((typeof start === 'undefined') || (start === null)) {
       start = 0;
     }
 
-    var startByteIndex = findCharacterByteIndex(string, start);
+    var startByteIndex = this.findByteIndex(string, start);
     var index = string.indexOf(searchValue, startByteIndex);
 
     if (index < 0) {
       return -1
     } else {
-      return findCharIndex(string, index);
+      return this.findCharIndex(string, index);
     }
-  }
+  };
 
   UtfString.lastIndexOf = function(string, searchValue, start) {
     var index;
@@ -79,19 +112,19 @@
     if ((typeof start === 'undefined') || (start === null)) {
       index = string.lastIndexOf(searchValue);
     } else {
-      var startByteIndex = findCharacterByteIndex(string, start);
+      var startByteIndex = this.findByteIndex(string, start);
       index = string.lastIndexOf(searchValue, startByteIndex);
     }
 
     if (index < 0) {
       return -1;
     } else {
-      return findCharIndex(string, index);
+      return this.findCharIndex(string, index);
     }
-  }
+  };
 
   UtfString.slice = function(string, start, finish) {
-    var startByteIndex = findCharacterByteIndex(string, start);
+    var startByteIndex = this.findByteIndex(string, start);
     var finishByteIndex;
 
     if (startByteIndex < 0) {
@@ -101,7 +134,7 @@
     if ((typeof finish === 'undefined') || (finish === null)) {
       finishByteIndex = string.length;
     } else {
-      finishByteIndex = findCharacterByteIndex(string, finish);
+      finishByteIndex = this.findByteIndex(string, finish);
 
       if (finishByteIndex < 0) {
         finishByteIndex = string.length;
@@ -109,7 +142,7 @@
     }
 
     return string.slice(startByteIndex, finishByteIndex);
-  }
+  };
 
   UtfString.substr = function(string, start, length) {
     if (start < 0) {
@@ -121,14 +154,15 @@
     } else {
       return this.slice(string, start, start + length);
     }
-  }
+  };
 
   // they do the same thing
-  UtfString.substring = UtfString.slice
+  UtfString.substring = UtfString.slice;
 
   UtfString.length = function(string) {
-    return findCharIndex(string, string.length);
-  }
+    // findCharIndex will return -1 if string is empty, so add 1
+    return this.findCharIndex(string, string.length - 1) + 1;
+  };
 
   UtfString.stringToCodePoints = function(string) {
     var result = [];
@@ -144,7 +178,7 @@
     }
 
     return result;
-  }
+  };
 
   UtfString.codePointsToString = function(arr) {
     var chars = [];
@@ -154,7 +188,7 @@
     }
 
     return chars.join('');
-  }
+  };
 
   UtfString.stringToBytes = function(string) {
     var result = [];
@@ -178,7 +212,7 @@
     }
 
     return result;
-  }
+  };
 
   UtfString.bytesToString = function(arr) {
     var result = [];
@@ -191,7 +225,7 @@
     }
 
     return result.join('');
-  }
+  };
 
   UtfString.stringToCharArray = function(string) {
     var result = [];
@@ -209,32 +243,7 @@
     } while(match !== null);
 
     return result;
-  }
-
-  function findCharIndex(string, byteIndex) {
-    // optimization: don't iterate unless necessary
-    if (!containsUnsupportedCharacters(string)) {
-      return byteIndex;
-    }
-
-    var regStr = unsupportedPairs.source + '|.';
-    var scanner = new RegExp(regStr, 'g');
-    var charCount = 0;
-
-    while (scanner.exec(string) !== null) {
-      if (scanner.lastIndex > byteIndex) {
-        break;
-      }
-
-      charCount ++;
-    }
-
-    return charCount;
-  }
-
-  function findCharacterByteIndex(string, charIndex) {
-    return scan(string, createScanner(), charIndex);
-  }
+  };
 
   function findSurrogateByteIndex(string, charIndex) {
     return scan(string, new RegExp(surrogatePairs.source, 'g'), charIndex);

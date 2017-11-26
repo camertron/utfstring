@@ -75,6 +75,10 @@ UtfString currently supports the following string operations:
 
 * `stringToCharArray(String str)` - Converts the given string into an array of invidivual logical characters. Note that each entry in the returned array may be more than one UTF-16 character.
 
+* `findByteIndex(String str, Integer charIndex)` - Finds the byte index for the given character index. Note: a "byte index" is really a "JavaScript string index", not a true byte offset. Use this function to convert a UTF character boundary to a JavaScript string index.
+
+* `findCharIndex(String str, Integer byteIndex)` - Finds the character index for the given byte index. Note: a "byte index" is really a "JavaSciprt string index", not a true byte offset. Use this function to convert a JavaScript string index to (the closest) UTF character boundary.
+
 ## Running Tests
 
 Tests are written in Jasmine and can be executed via [jasmine-node](https://github.com/mhevery/jasmine-node):
