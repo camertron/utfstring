@@ -21,7 +21,7 @@
       return byteIndex;
     }
 
-    var regStr = unsupportedPairs.source + '|.';
+    var regStr = unsupportedPairs.source + '|[^]';
     var scanner = new RegExp(regStr, 'g');
     var charCount = 0;
 
@@ -293,6 +293,7 @@
     return new RegExp(regStr, modifiers);
   }
 
+  // "unsupported" means "handled incorrectly by javascript"
   var surrogatePairs = /[\uD800-\uDBFF][\uDC00-\uDFFF]/;
   var regionalIndicatorPairs = /\uD83C[\uDDE6-\uDDFF]\uD83C[\uDDE6-\uDDFF]/;
   var unsupportedPairs = createScanner();

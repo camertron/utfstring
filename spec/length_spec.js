@@ -31,6 +31,12 @@ describe('UtfString', function() {
       expect(UtfString.length(str)).toEqual(14);
     });
 
+    it('works correctly with newline characters', function() {
+      var str = "\u{000D}\u{1F1E6}";
+      expect(str.length).toEqual(3);
+      expect(UtfString.length(str)).toEqual(2);
+    });
+
     it('correctly counts single regional indicator characters', function() {
       var str = '🇸'
       expect(str.length).toEqual(2);

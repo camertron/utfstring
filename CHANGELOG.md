@@ -1,3 +1,6 @@
+# 1.3.1
+- Fix bug causing incorrect character index calculations for strings containing newlines.
+
 # 1.3.0
 - Added `findByteIndex` and `findCharIndex` functions for converting between JavaScript string indices and UTF character boundaries.
 
