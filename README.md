@@ -79,6 +79,17 @@ UtfString currently supports the following string operations:
 
 * `findCharIndex(String str, Integer byteIndex)` - Finds the character index for the given byte index. Note: a "byte index" is really a "JavaSciprt string index", not a true byte offset. Use this function to convert a JavaScript string index to (the closest) UTF character boundary.
 
+## Regional Indicators
+
+Certain characters in the Unicode standard are meant to be combined by display systems, but are represented by multiple code points. A good example are the so-called regional indicators. By themselves, regional indicators u1F1EB (regional indicator symbol letter F) and u1F1F7 (regional indicator symbol letter R) don't mean much, but combined they form the French flag: 🇫🇷.
+
+Since regional indicators are semantically individual Unicode code points and because utfstring is a dependency of other Unicode-aware libraries, it doesn't make sense for utfstring to treat two regional indicators as a single character by default. That said, it can be useful to treat them as such from a display or layout perspective. In order to support both scenarios, two implementations are necessary. The first and default implementation is available via the instructions above. For visual grapheme clustering such as the grouping of regional indicators, use the `visual` property on `UtfString`. Display-aware versions of all the functions described above are available. The difference can be seen by way of the `length` function:
+
+```javascript
+UtfString.visual.length("🇫🇷");  // 1
+UtfString.length("🇫🇷");         // 2
+```
+
 ## Running Tests
 
 Tests are written in Jasmine and can be executed via [jasmine-node](https://github.com/mhevery/jasmine-node):
