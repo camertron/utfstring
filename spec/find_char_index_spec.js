@@ -33,19 +33,6 @@ describe('UtfString', function() {
       expect(UtfString.findCharIndex(str, 8)).toEqual(-1);
     });
 
-    it('works with regional indicators', function() {
-      var str = '🇸🇴🇫🇷';
-      expect(UtfString.findCharIndex(str, 0)).toEqual(0);
-      expect(UtfString.findCharIndex(str, 1)).toEqual(0);
-      expect(UtfString.findCharIndex(str, 2)).toEqual(0);
-      expect(UtfString.findCharIndex(str, 3)).toEqual(0);
-      expect(UtfString.findCharIndex(str, 4)).toEqual(1);
-      expect(UtfString.findCharIndex(str, 5)).toEqual(1);
-      expect(UtfString.findCharIndex(str, 6)).toEqual(1);
-      expect(UtfString.findCharIndex(str, 7)).toEqual(1);
-      expect(UtfString.findCharIndex(str, 8)).toEqual(-1);
-    });
-
     it('works with a newline character', function() {
       var str = "\u{000D}\u{1F1E6}";
       expect(UtfString.findCharIndex(str, 0)).toEqual(0);

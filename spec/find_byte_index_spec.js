@@ -29,11 +29,10 @@ describe('UtfString', function() {
       expect(UtfString.findByteIndex(str, 4)).toEqual(-1);
     });
 
-    it('works with regional indicators', function() {
-      var str = '🇸🇴🇫🇷';
+    it('works with mixed characters', function() {
+      var str = "\u{0001}\u{1F1E6}";
       expect(UtfString.findByteIndex(str, 0)).toEqual(0);
-      expect(UtfString.findByteIndex(str, 1)).toEqual(4);
-      expect(UtfString.findByteIndex(str, 2)).toEqual(-1);
+      expect(UtfString.findByteIndex(str, 1)).toEqual(1);
     });
   });
 });

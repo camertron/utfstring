@@ -20,10 +20,5 @@ describe('UtfString', function() {
         ['𤔣', '𤔤', '𤔥', '𤔦']
       );
     });
-
-    it('works with regional indicators', function() {
-      var str = '🇸🇴🇫🇷';
-      expect(UtfString.stringToCharArray(str)).toEqual(['🇸🇴', '🇫🇷']);
-    });
   });
 });

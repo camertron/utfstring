@@ -26,12 +26,6 @@ describe('UtfString', function() {
       expect(UtfString.charAt(str, 3)).toEqual('𤔦');
     });
 
-    it('works with regional indicators', function() {
-      var str = '🇸🇴🇫🇷';
-      expect(UtfString.charAt(str, 0)).toEqual('🇸🇴');
-      expect(UtfString.charAt(str, 1)).toEqual('🇫🇷');
-    });
-
     it('returns an empty string for indices that are out of range', function() {
       var str = 'abc';
       expect(UtfString.charAt(str, 3)).toEqual('');
