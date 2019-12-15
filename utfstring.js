@@ -255,25 +255,42 @@
       }
 
       var byteIndex = 0;
-      var charCount = 0;
+      var curCharIndex = 0;
 
-      do {
+      while (true) {
         var match = scanner.exec(string);
+        var nextIdx;
 
-        if (match === null) {
-          break;
-        }
-
-        if (charCount < charIndex) {
-          byteIndex += match[0].length;
-          charCount ++;
+        if (match) {
+          nextIdx = match.index;
         } else {
-          break;
+          nextIdx = string.length;
         }
-      } while (match !== null);
 
-      if (byteIndex >= string.length) {
-        return -1;
+        while (curCharIndex < charIndex) {
+          if (byteIndex == nextIdx) {
+            if (curCharIndex < charIndex) {
+              curCharIndex ++;
+
+              if (match) {
+                byteIndex += match[0].length;
+              } else {
+                byteIndex ++;
+              }
+            }
+
+            break;
+          }
+
+          byteIndex ++;
+          curCharIndex ++;
+        }
+
+        if (curCharIndex == charIndex) {
+          break;
+        } else if (byteIndex >= string.length || !match) {
+          return -1;
+        }
       }
 
       return byteIndex;
