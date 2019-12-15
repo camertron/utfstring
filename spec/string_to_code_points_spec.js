@@ -21,6 +21,13 @@ describe('UtfString', function() {
       );
     });
 
+    it('works with mixed astral and non-astral plane characters', function() {
+      var str = "\u0001\u{1F1E6}\u0002";
+      expect(UtfString.stringToCodePoints(str)).toEqual(
+        [1, 127462, 2]
+      );
+    });
+
     it('works with regional indicators', function() {
       var str = '🇫🇷';
       expect(UtfString.stringToCodePoints(str)).toEqual([127467, 127479]);
