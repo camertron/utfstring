@@ -1,3 +1,6 @@
+# 2.0.2
+* Add missing `var` in front of local variable (#7, @SStauden).
+
 # 2.0.1
 * Fix bug causing utfstring to incorrectly calculate logical character indices.
   - For example, `utfstring.charCodeAt("\u0001\u1F1E6", 1)` returned 56806 when it should have returned 127462.
