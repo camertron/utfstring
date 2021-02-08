@@ -168,7 +168,7 @@
       var result = [];
 
       for (var i = 0; i < string.length; i ++) {
-        codePoint = this.charCodeAt(string, i);
+        var codePoint = this.charCodeAt(string, i);
 
         if (!codePoint) {
           break;
