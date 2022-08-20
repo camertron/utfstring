@@ -13,7 +13,7 @@ declare class UtfStringClass<T = undefined> {
      * @param visual An object that is stored as the "visual" property of the newly created object.
      */
     constructor(graphemeClusterRegexes: RegExp[], visual: T);
-    /** Stores another object that can be used to also handle regional indicators as one character. */
+    /** Another version of the object that handles regional indicators as one character. */
     visual: T;
     /**
      * Returns the character at the given index from the given string.

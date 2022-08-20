@@ -26,7 +26,7 @@ class UtfStringClass<T = undefined> {
         this.visual = visual;
     }
 
-    /** Stores another object that can be used to also handle regional indicators as one character. */
+    /** Another version of the object that handles regional indicators as one character. */
     public visual: T;
 
     /**
