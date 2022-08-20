@@ -43,7 +43,7 @@ In node:
 var UtfString = require('utfstring');
 ```
 
-In the browser, `UtfString` will be available on `window`.
+In the browser, `UtfString` will be available on `window` after you import the Javascript file from the `dist` folder.
 
 ## Usage
 
