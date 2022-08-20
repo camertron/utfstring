@@ -94,8 +94,8 @@ UtfString.length("🇫🇷");         // 2
 
 Tests are written in Jasmine and can be executed via [jasmine-node](https://github.com/mhevery/jasmine-node):
 
-1. `npm install -g jasmine-node`
-2. `jasmine-node spec`
+1. `npm install`
+2. `npm test`
 
 ## Authors
 

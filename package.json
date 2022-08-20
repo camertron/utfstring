@@ -1,26 +1,35 @@
 {
-  "name": "utfstring",
-  "version": "2.0.2",
-  "description": "UTF-safe string operations",
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:camertron/utfstring.git"
-  },
-  "keywords": [
-    "unicode",
-    "string",
-    "utf-16",
-    "utf"
-  ],
-  "main": "utfstring",
-  "author": "Cameron Dutro",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/camertron/utfstring/issues"
-  },
-  "homepage": "https://github.com/camertron/utfstring",
-  "devDependencies": {
-    "jasmine-node": "^1.14.5",
-    "utfstring": "./"
-  }
+    "name": "utfstring",
+    "version": "2.0.2",
+    "description": "UTF-safe string operations",
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:camertron/utfstring.git"
+    },
+    "keywords": [
+        "unicode",
+        "string",
+        "utf-16",
+        "utf"
+    ],
+    "main": "dist/utfstring.js",
+    "types": "dist/utfstring.d.ts",
+    "author": "Cameron Dutro",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/camertron/utfstring/issues"
+    },
+    "homepage": "https://github.com/camertron/utfstring",
+    "devDependencies": {
+        "jasmine-node": "3.0.0",
+        "rimraf": "3.0.2",
+        "typescript": "4.7.4",
+        "utfstring": "./"
+    },
+    "scripts": {
+        "clean": "rimraf dist",
+        "build": "npx tsc",
+        "clean-build": "npm run clean && npm run build",
+        "test": "npx jasmine-node spec"
+    }
 }
