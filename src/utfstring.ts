@@ -6,8 +6,9 @@ const regionalIndicatorPairs = /\uD83C[\uDDE6-\uDDFF]\uD83C[\uDDE6-\uDDFF]/;
 
 /**
  * Class with UTF-safe string operations.
+ * @template T Type used for the "visual" property of the class.
  */
-class UtfStringClass<T> {
+class UtfStringClass<T = undefined> {
     /** Collection of regular expressions for matching regional indicators. */
     private readonly graphemeClusterRegexes: RegExp[];
 
