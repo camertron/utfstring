@@ -9,6 +9,9 @@ const regionalIndicatorPairs = /\uD83C[\uDDE6-\uDDFF]\uD83C[\uDDE6-\uDDFF]/;
  * @template T Type used for the "visual" property of the class.
  */
 class UtfStringClass<T = undefined> {
+    /** Another version of the object that handles regional indicators as one character. */
+    public readonly visual: T;
+
     /** Collection of regular expressions for matching regional indicators. */
     private readonly graphemeClusterRegexes: RegExp[];
 
@@ -25,9 +28,6 @@ class UtfStringClass<T = undefined> {
         this.graphemeClusterRegex = this.createScanner([], "");
         this.visual = visual;
     }
-
-    /** Another version of the object that handles regional indicators as one character. */
-    public visual: T;
 
     /**
      * Returns the character at the given index from the given string.

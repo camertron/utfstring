@@ -3,6 +3,8 @@
  * @template T Type used for the "visual" property of the class.
  */
 declare class UtfStringClass<T = undefined> {
+    /** Another version of the object that handles regional indicators as one character. */
+    readonly visual: T;
     /** Collection of regular expressions for matching regional indicators. */
     private readonly graphemeClusterRegexes;
     /** Regular expression matching surrogate pairs and regional indicators. */
@@ -13,8 +15,6 @@ declare class UtfStringClass<T = undefined> {
      * @param visual An object that is stored as the "visual" property of the newly created object.
      */
     constructor(graphemeClusterRegexes: RegExp[], visual: T);
-    /** Another version of the object that handles regional indicators as one character. */
-    visual: T;
     /**
      * Returns the character at the given index from the given string.
      * @param str The string from which to get the character.
