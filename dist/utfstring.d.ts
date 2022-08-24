@@ -144,7 +144,7 @@ declare class UtfStringClass<T = undefined> {
      */
     private findSurrogateByteIndex;
     /**
-     * Scans a given string starting up until a specific character index using a regular expression
+     * Scans a given string up until a specific character index using a regular expression
      * and returns the byte index at which the scan found a match.
      * @param str The string that is scanned.
      * @param scanner The scanner that is used to scan the string.

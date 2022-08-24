@@ -25,7 +25,7 @@ Encoding is the process of converting Unicode codepoints into binary data that c
 
 #### Javascript's Solution
 
-To mitigate this problem, Javascript (as well as other languages and platforms that use UTF-16 encoding) makes use of what are called "surrogate pairs". Surrogate pairs are two encoded characters that represent a single logical character. Together they are 4 bytes wide and can represent every Unicode character (2<sup>32</sup> = 4,294,967,296).
+To mitigate this problem, Javascript (as well as other languages and platforms that use UTF-16 encoding) makes use of what are called "surrogate pairs." Surrogate pairs are two encoded characters that represent a single logical character. Together they are 4 bytes wide and can represent every Unicode character (2<sup>32</sup> = 4,294,967,296).
 
 Unfortunately, that's where the good news ends. Javascript still counts each group of two bytes as a character, meaning any character made up of a surrogate pair looks like two logical characters to Javascript instead of just one. That's why `len` contains `2` in the example above.
 
