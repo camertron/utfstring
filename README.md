@@ -43,7 +43,7 @@ In node:
 var UtfString = require('utfstring');
 ```
 
-In the browser, `UtfString` will be available on `window`.
+In the browser, `UtfString` will be available on `window` after you import the Javascript file from the `dist` folder.
 
 ## Usage
 
@@ -73,7 +73,7 @@ UtfString currently supports the following string operations:
 
 * `bytesToString(Array arr)` - Converts an array of UTF-16 bytes into a string.
 
-* `stringToCharArray(String str)` - Converts the given string into an array of invidivual logical characters. Note that each entry in the returned array may be more than one UTF-16 character.
+* `stringToCharArray(String str)` - Converts the given string into an array of individual logical characters. Note that each entry in the returned array may be more than one UTF-16 character.
 
 * `findByteIndex(String str, Integer charIndex)` - Finds the byte index for the given character index. Note: a "byte index" is really a "JavaScript string index", not a true byte offset. Use this function to convert a UTF character boundary to a JavaScript string index.
 
@@ -94,8 +94,8 @@ UtfString.length("🇫🇷");         // 2
 
 Tests are written in Jasmine and can be executed via [jasmine-node](https://github.com/mhevery/jasmine-node):
 
-1. `npm install -g jasmine-node`
-2. `jasmine-node spec`
+1. `npm install`
+2. `npm test`
 
 ## Authors
 

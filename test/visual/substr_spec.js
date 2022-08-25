@@ -1,4 +1,4 @@
-var UtfString = require('../../utfstring.js');
+var UtfString = require('../../dist/utfstring.js');
 
 describe('UtfString visual', function() {
   describe('#substr', function() {

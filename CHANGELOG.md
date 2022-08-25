@@ -1,3 +1,6 @@
+# 2.1.0
+* Port code to TypeScript and add comments (#8, @krisztianb).
+
 # 2.0.2
 * Add missing `var` in front of local variable (#7, @SStauden).
 
