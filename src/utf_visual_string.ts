@@ -1,49 +1,25 @@
-/** Regular expression for matching surrogate pairs. */
-const surrogatePairs = /[\uD800-\uDBFF][\uDC00-\uDFFF]/;
-
-/** Regular expression for matching regional indicator pairs. */
-const regionalIndicatorPairs = /\uD83C[\uDDE6-\uDDFF]\uD83C[\uDDE6-\uDDFF]/;
+import { createRegionalIndicatorPairScanner, createSurrogatePairScanner } from "./utils";
 
 /**
- * Class with UTF-safe string operations.
- * @template T Type used for the "visual" property of the class.
+ * Class with UTF-safe string operations that treats regional indicator pairs as one character.
  */
-class UtfStringClass<T = undefined> {
-    /** Another version of the object that handles regional indicators as one character. */
-    public readonly visual: T;
-
-    /** Collection of regular expressions for matching regional indicators. */
-    private readonly graphemeClusterRegexes: RegExp[];
-
-    /** Regular expression matching surrogate pairs and regional indicators. */
-    private readonly graphemeClusterRegex: RegExp;
-
-    /**
-     * Creates a new object providing UTF-safe string operations.
-     * @param graphemeClusterRegexes Collection of regular expressions for matching regional indicators.
-     * @param visual An object that is stored as the "visual" property of the newly created object.
-     */
-    public constructor(graphemeClusterRegexes: RegExp[], visual: T) {
-        this.graphemeClusterRegexes = graphemeClusterRegexes;
-        this.graphemeClusterRegex = this.createScanner([], "");
-        this.visual = visual;
-    }
-
+export class UtfVisualString {
     /**
      * Returns the character at the given index from the given string.
      * @param str The string from which to get the character.
      * @param index The index of the wanted character.
      * @returns The character at the given index.
      */
-    public charAt(str: string, index: number): string {
-        const byteIndex = this.findByteIndex(str, index);
+    public static charAt(str: string, index: number): string {
+        const byteIndex = UtfVisualString.findByteIndex(str, index);
 
         if (byteIndex < 0 || byteIndex >= str.length) {
             return "";
         }
 
         const characters = str.slice(byteIndex, byteIndex + 8);
-        const match = this.graphemeClusterRegex.exec(characters);
+        const scanner = createRegionalIndicatorPairScanner();
+        const match = scanner.exec(characters);
 
         return match === null ? characters[0] : match[0];
     }
@@ -54,8 +30,8 @@ class UtfStringClass<T = undefined> {
      * @param index The index of the wanted Unicode codepoint.
      * @returns The Unicode codepoint at the given index.
      */
-    public charCodeAt(str: string, index: number): number {
-        const byteIndex = this.findSurrogateByteIndex(str, index);
+    public static charCodeAt(str: string, index: number): number {
+        const byteIndex = UtfVisualString.findSurrogateByteIndex(str, index);
 
         if (byteIndex < 0) {
             return NaN;
@@ -77,7 +53,7 @@ class UtfStringClass<T = undefined> {
      * @param charCode The Unicode codepoint.
      * @returns The string for the given Unicode codepoint.
      */
-    public fromCharCode(charCode: number): string {
+    public static fromCharCode(charCode: number): string {
         if (charCode > 0xffff) {
             charCode -= 0x10000;
             return String.fromCharCode(0xd800 + (charCode >> 10), 0xdc00 + (charCode & 0x3ff));
@@ -94,11 +70,11 @@ class UtfStringClass<T = undefined> {
      * @returns The first instance of the search value within the string.
      *          -1 if the search value could not be found.
      */
-    public indexOf(str: string, searchValue: string, start = 0): number {
-        const startByteIndex = this.findByteIndex(str, start);
+    public static indexOf(str: string, searchValue: string, start = 0): number {
+        const startByteIndex = UtfVisualString.findByteIndex(str, start);
         const index = str.indexOf(searchValue, startByteIndex);
 
-        return index < 0 ? -1 : this.findCharIndex(str, index);
+        return index < 0 ? -1 : UtfVisualString.findCharIndex(str, index);
     }
 
     /**
@@ -110,17 +86,17 @@ class UtfStringClass<T = undefined> {
      * @returns The last instance of the search value within the string.
      *          -1 if the search value could not be found.
      */
-    public lastIndexOf(str: string, searchValue: string, start?: number): number {
+    public static lastIndexOf(str: string, searchValue: string, start?: number): number {
         let index: number;
 
         if (typeof start === "undefined") {
             index = str.lastIndexOf(searchValue);
         } else {
-            const startByteIndex = this.findByteIndex(str, start);
+            const startByteIndex = UtfVisualString.findByteIndex(str, start);
             index = str.lastIndexOf(searchValue, startByteIndex);
         }
 
-        return index < 0 ? -1 : this.findCharIndex(str, index);
+        return index < 0 ? -1 : UtfVisualString.findCharIndex(str, index);
     }
 
     /**
@@ -130,8 +106,8 @@ class UtfStringClass<T = undefined> {
      * @param finish The index at which to end extracting the characters.
      * @returns The characters between the two given indices.
      */
-    public slice(str: string, start: number, finish?: number): string {
-        let startByteIndex = this.findByteIndex(str, start);
+    public static slice(str: string, start: number, finish?: number): string {
+        let startByteIndex = UtfVisualString.findByteIndex(str, start);
 
         if (startByteIndex < 0) {
             startByteIndex = str.length;
@@ -142,7 +118,7 @@ class UtfStringClass<T = undefined> {
         if (typeof finish === "undefined") {
             finishByteIndex = str.length;
         } else {
-            finishByteIndex = this.findByteIndex(str, finish);
+            finishByteIndex = UtfVisualString.findByteIndex(str, finish);
 
             if (finishByteIndex < 0) {
                 finishByteIndex = str.length;
@@ -159,15 +135,15 @@ class UtfStringClass<T = undefined> {
      * @param length The number of characters to extract.
      * @returns The characters starting at the given start index up to the start index plus the given length.
      */
-    public substr(str: string, start: number, length?: number): string {
+    public static substr(str: string, start: number, length?: number): string {
         if (start < 0) {
-            start = this.length(str) + start;
+            start = UtfVisualString.lengthOf(str) + start;
         }
 
         if (typeof length === "undefined") {
-            return this.slice(str, start);
+            return UtfVisualString.slice(str, start);
         } else {
-            return this.slice(str, start, start + length);
+            return UtfVisualString.slice(str, start, start + length);
         }
     }
 
@@ -178,8 +154,8 @@ class UtfStringClass<T = undefined> {
      * @param length The number of characters to extract.
      * @returns The characters starting at the given start index up to the start index plus the given length.
      */
-    public substring(str: string, start: number, length?: number): string {
-        return this.substr(str, start, length);
+    public static substring(str: string, start: number, length?: number): string {
+        return UtfVisualString.substr(str, start, length);
     }
 
     /**
@@ -187,9 +163,9 @@ class UtfStringClass<T = undefined> {
      * @param str The string whose length is calculated.
      * @returns The number of logical characters in the given string.
      */
-    public length(str: string): number {
+    public static lengthOf(str: string): number {
         // findCharIndex will return -1 if string is empty, so add 1
-        return this.findCharIndex(str, str.length - 1) + 1;
+        return UtfVisualString.findCharIndex(str, str.length - 1) + 1;
     }
 
     /**
@@ -197,11 +173,11 @@ class UtfStringClass<T = undefined> {
      * @param str The string that should be converted.
      * @returns The codepoints taken from the string.
      */
-    public stringToCodePoints(str: string): number[] {
+    public static stringToCodePoints(str: string): number[] {
         const result = new Array<number>();
 
         for (let i = 0; i < str.length; i++) {
-            const codePoint = this.charCodeAt(str, i);
+            const codePoint = UtfVisualString.charCodeAt(str, i);
 
             if (!codePoint) {
                 break;
@@ -218,8 +194,8 @@ class UtfStringClass<T = undefined> {
      * @param arr The codepoints that should be converted.
      * @returns The string created from the codepoints.
      */
-    public codePointsToString(arr: number[]): string {
-        const chars = arr.map((a) => this.fromCharCode(a));
+    public static codePointsToString(arr: number[]): string {
+        const chars = arr.map((a) => UtfVisualString.fromCharCode(a));
         return chars.join("");
     }
 
@@ -228,7 +204,7 @@ class UtfStringClass<T = undefined> {
      * @param str The string that should be converted.
      * @returns The UTF-16 bytes created from the string.
      */
-    public stringToBytes(str: string): number[] {
+    public static stringToBytes(str: string): number[] {
         let result = new Array<number>();
 
         for (let i = 0; i < str.length; i++) {
@@ -257,7 +233,7 @@ class UtfStringClass<T = undefined> {
      * @param arr The array of UTF-16 bytes that should be converted.
      * @returns The string created from the array of UTF-16 bytes.
      */
-    public bytesToString(arr: number[]): string {
+    public static bytesToString(arr: number[]): string {
         const result = new Array<string>();
 
         for (let i = 0; i < arr.length; i += 2) {
@@ -276,9 +252,9 @@ class UtfStringClass<T = undefined> {
      * @param str The string that should be converted.
      * @returns The array containing the individual logical characters taken from the string.
      */
-    public stringToCharArray(str: string): string[] {
+    public static stringToCharArray(str: string): string[] {
         const result = new Array<string>();
-        const scanner = this.createScanner();
+        const scanner = createRegionalIndicatorPairScanner();
 
         let match: RegExpExecArray | null;
         do {
@@ -303,12 +279,12 @@ class UtfStringClass<T = undefined> {
      * @returns The byte index for the character index in the string.
      *          -1 if the character index is equal to or higher than the length of the string.
      */
-    public findByteIndex(str: string, charIndex: number): number {
-        if (charIndex >= this.length(str)) {
+    public static findByteIndex(str: string, charIndex: number): number {
+        if (charIndex >= UtfVisualString.lengthOf(str)) {
             return -1;
         }
 
-        return this.scan(str, this.createScanner(), charIndex);
+        return UtfVisualString.scan(str, createRegionalIndicatorPairScanner(), charIndex);
     }
 
     /**
@@ -320,17 +296,17 @@ class UtfStringClass<T = undefined> {
      * @returns The character index for the byte index in the string.
      *          -1 if the byte index is equal to or higher than the number of bytes in the string.
      */
-    public findCharIndex(str: string, byteIndex: number): number {
+    public static findCharIndex(str: string, byteIndex: number): number {
         if (byteIndex >= str.length) {
             return -1;
         }
 
         // optimization: don't iterate unless necessary
-        if (!this.containsGraphemeClusterGroup(str)) {
+        if (!UtfVisualString.containsSurrogateOrRegionalIndicatorPair(str)) {
             return byteIndex;
         }
 
-        const scanner = this.createScanner();
+        const scanner = createRegionalIndicatorPairScanner();
         let charCount = 0;
 
         while (scanner.exec(str) !== null) {
@@ -351,8 +327,8 @@ class UtfStringClass<T = undefined> {
      * @returns The byte index of a surrogate pair in the given string.
      *          -1 if no surrogate pair was found.
      */
-    private findSurrogateByteIndex(str: string, charIndex: number): number {
-        return this.scan(str, new RegExp(surrogatePairs.source, "g"), charIndex);
+    private static findSurrogateByteIndex(str: string, charIndex: number): number {
+        return UtfVisualString.scan(str, createSurrogatePairScanner(), charIndex);
     }
 
     /**
@@ -364,9 +340,9 @@ class UtfStringClass<T = undefined> {
      * @returns The byte index at which the scan found a match.
      *          -1 if the scan did not find a match.
      */
-    private scan(str: string, scanner: RegExp, charIndex: number): number {
+    private static scan(str: string, scanner: RegExp, charIndex: number): number {
         // optimization: don't iterate unless it's necessary
-        if (!this.containsGraphemeClusterGroup(str)) {
+        if (!UtfVisualString.containsSurrogateOrRegionalIndicatorPair(str)) {
             return charIndex;
         }
 
@@ -411,45 +387,9 @@ class UtfStringClass<T = undefined> {
      * @param str The string that is checked.
      * @returns True if the given string contains surrogate pairs or regional indicators, false otherwise.
      */
-    private containsGraphemeClusterGroup(str: string): boolean {
-        return this.graphemeClusterRegex.test(str);
+    private static containsSurrogateOrRegionalIndicatorPair(str: string): boolean {
+        const scanner = createRegionalIndicatorPairScanner();
+        return scanner.test(str);
     }
-
-    /**
-     * Creates a regular expression for scanning strings.
-     * @param extraSources Additional regular expressions that are added to the created regular expression.
-     * @param modifiers Modifier flags for the created regular expression.
-     * @returns The regular expression for scanning string.
-     */
-    private createScanner(extraSources?: string[], modifiers?: string): RegExp {
-        if (extraSources === undefined) {
-            extraSources = ["[^]"];
-        }
-
-        if (modifiers === undefined) {
-            modifiers = "g";
-        }
-
-        let sources = new Array<string>();
-
-        this.graphemeClusterRegexes.forEach((re) => {
-            sources.push(re.source);
-        });
-
-        sources.push(surrogatePairs.source);
-        sources = sources.concat(extraSources);
-
-        return new RegExp(sources.join("|"), modifiers);
-    }
-}
-
-const visual = new UtfStringClass([regionalIndicatorPairs], undefined);
-const UtfString = new UtfStringClass([], visual);
-
-export = UtfString;
-
-// if there is a DOM add the object to the window object
-if (typeof window !== "undefined" && window !== null) {
-    (window as any).UtfString = UtfString;
 }
 

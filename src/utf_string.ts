@@ -1,11 +1,7 @@
 import { createUtfSafeCharScanner, createSurrogatePairScanner } from "./utils";
 
-/** Regular expression for matching surrogate pairs. */
-const surrogatePairs = /[\uD800-\uDBFF][\uDC00-\uDFFF]/;
-
 /**
  * Class with UTF-safe string operations.
- * @template T Type used for the "visual" property of the class.
  */
 export class UtfString {
     /**
@@ -22,8 +18,8 @@ export class UtfString {
         }
 
         const characters = str.slice(byteIndex, byteIndex + 8);
-        const surrogatePairRegex = createSurrogatePairScanner();
-        const match = surrogatePairRegex.exec(characters);
+        const scanner = createSurrogatePairScanner();
+        const match = scanner.exec(characters);
 
         return match === null ? characters[0] : match[0];
     }
@@ -332,7 +328,7 @@ export class UtfString {
      *          -1 if no surrogate pair was found.
      */
     private static findSurrogateByteIndex(str: string, charIndex: number): number {
-        return UtfString.scan(str, new RegExp(surrogatePairs.source, "g"), charIndex);
+        return UtfString.scan(str, createSurrogatePairScanner(), charIndex);
     }
 
     /**
@@ -392,8 +388,8 @@ export class UtfString {
      * @returns True if the given string contains surrogate pairs, false otherwise.
      */
     private static containsSurrogatePair(str: string): boolean {
-        const surrogatePairRegex = createSurrogatePairScanner();
-        return surrogatePairRegex.test(str);
+        const scanner = createSurrogatePairScanner();
+        return scanner.test(str);
     }
 }
 
