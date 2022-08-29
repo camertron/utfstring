@@ -1,3 +1,5 @@
+[![NPM Version](https://img.shields.io/npm/v/utfstring?color=33cd56&logo=npm)](https://www.npmjs.com/package/utfstring)
+
 utfstring
 ===
 
