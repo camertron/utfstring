@@ -43,7 +43,7 @@ export class UtfString {
      * @returns The character at the given index.
      */
     public charAt(index: number): string {
-        return UtfString.charAt(this.unsafeString, index);
+        return Object.getPrototypeOf(this).constructor.charAt(this.unsafeString, index);
     }
 
     /**
