@@ -108,11 +108,20 @@ export class UtfString {
     }
 
     /**
+     * Returns a UTF-safe string object for the given Unicode codepoint.
+     * @param charCode The Unicode codepoint.
+     * @returns The UTF-safe string object for the given Unicode codepoint.
+     */
+    public static fromCharCode(charCode: number): UtfString {
+        return new UtfString(this.stringFromCharCode(charCode));
+    }
+
+    /**
      * Returns the string for the given Unicode codepoint.
      * @param charCode The Unicode codepoint.
      * @returns The string for the given Unicode codepoint.
      */
-    public static fromCharCode(charCode: number): string {
+    public static stringFromCharCode(charCode: number): string {
         if (charCode > 0xffff) {
             charCode -= 0x10000;
             return String.fromCharCode(0xd800 + (charCode >> 10), 0xdc00 + (charCode & 0x3ff));
@@ -254,7 +263,7 @@ export class UtfString {
      * @returns The string created from the codepoints.
      */
     public static codePointsToString(arr: number[]): string {
-        const chars = arr.map((a) => this.fromCharCode(a));
+        const chars = arr.map((a) => this.stringFromCharCode(a));
         return chars.join("");
     }
 
