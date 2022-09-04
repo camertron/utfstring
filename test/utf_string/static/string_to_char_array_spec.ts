@@ -1,8 +1,8 @@
 import expect from "expect";
-import { UtfString } from "../src/utf_string";
+import { UtfString } from "../../../src/utf_string";
 
 describe("UtfString", () => {
-    describe("#stringToCharArray", () => {
+    describe("#stringToCharArray (static)", () => {
         it("works with standard ASCII characters", () => {
             const str = "abc";
             expect(UtfString.stringToCharArray(str)).toEqual(["a", "b", "c"]);

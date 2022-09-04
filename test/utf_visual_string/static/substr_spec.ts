@@ -1,8 +1,8 @@
 import expect from "expect";
-import { UtfVisualString } from "../../src/utf_visual_string";
+import { UtfVisualString } from "../../../src/utf_visual_string";
 
 describe("UtfVisualString", () => {
-    describe("#substr", () => {
+    describe("#substr (static)", () => {
         describe("with regional indicators", () => {
             const str = "🇸🇴🇫🇷";
 

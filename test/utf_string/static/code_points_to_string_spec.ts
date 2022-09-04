@@ -1,8 +1,8 @@
 import expect from "expect";
-import { UtfString } from "../src/utf_string";
+import { UtfString } from "../../../src/utf_string";
 
 describe("UtfString", () => {
-    describe("#codePointsToString", () => {
+    describe("#codePointsToString (static)", () => {
         it("works with standard ASCII characters", () => {
             const arr = [97, 98, 99];
             expect(UtfString.codePointsToString(arr)).toEqual("abc");

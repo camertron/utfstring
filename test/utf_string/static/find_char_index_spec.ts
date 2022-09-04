@@ -1,8 +1,8 @@
 import expect from "expect";
-import { UtfString } from "../src/utf_string";
+import { UtfString } from "../../../src/utf_string";
 
 describe("UtfString", () => {
-    describe("#findCharIndex", () => {
+    describe("#findCharIndex (static)", () => {
         it("works with standard ASCII characters", () => {
             const str = "abc";
             expect(UtfString.findCharIndex(str, 0)).toEqual(0);

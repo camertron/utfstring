@@ -1,8 +1,8 @@
 import expect from "expect";
-import { UtfString } from "../src/utf_string";
+import { UtfString } from "../../../src/utf_string";
 
 describe("UtfString", () => {
-    describe("#fromCharCode", () => {
+    describe("#fromCharCode (static)", () => {
         it("works with standard ASCII characters", () => {
             expect(UtfString.fromCharCode(97)).toEqual("a");
             expect(UtfString.fromCharCode(98)).toEqual("b");

@@ -1,8 +1,8 @@
 import expect from "expect";
-import { UtfVisualString } from "../../src/utf_visual_string";
+import { UtfVisualString } from "../../../src/utf_visual_string";
 
 describe("UtfVisualString", () => {
-    describe("#length", () => {
+    describe("#lengthOf (static)", () => {
         it("correctly counts single regional indicator characters", () => {
             const str = "🇸";
             expect(str.length).toEqual(2);

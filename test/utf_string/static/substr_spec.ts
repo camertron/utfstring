@@ -1,8 +1,8 @@
 import expect from "expect";
-import { UtfString } from "../src/utf_string";
+import { UtfString } from "../../../src/utf_string";
 
 describe("UtfString", () => {
-    describe("#substr", () => {
+    describe("#substr (static)", () => {
         describe("with standard ASCII characters", () => {
             const str = "abc";
 

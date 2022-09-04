@@ -1,8 +1,8 @@
 import expect from "expect";
-import { UtfString } from "../src/utf_string";
+import { UtfString } from "../../../src/utf_string";
 
 describe("UtfString", () => {
-    describe("#lengthOf", () => {
+    describe("#lengthOf (static)", () => {
         it("counts the number of characters in an ASCII string", () => {
             const str = "abc";
             expect(str.length).toEqual(3);

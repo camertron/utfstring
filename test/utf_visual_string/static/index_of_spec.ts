@@ -1,8 +1,8 @@
 import expect from "expect";
-import { UtfVisualString } from "../../src/utf_visual_string";
+import { UtfVisualString } from "../../../src/utf_visual_string";
 
 describe("UtfVisualString", () => {
-    describe("#indexOf", () => {
+    describe("#indexOf (static)", () => {
         it("works with regional indicators", () => {
             const str = "🇸🇴🇫🇷";
             expect(UtfVisualString.indexOf(str, "🇸🇴")).toEqual(0);

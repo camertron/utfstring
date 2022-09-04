@@ -26,6 +26,26 @@ export function createUtfSafeCharScannerHandlingSurrogatePairs(): RegExp {
  * Class with UTF-safe string operations.
  */
 export class UtfString {
+    /** The unsafe string for which the object is providing a UTF-safe interface. */
+    private readonly unsafeString: string;
+
+    /**
+     * Creates a new UTF-safe string object.
+     * @param unsafeString The unsafe string.
+     */
+    public constructor(unsafeString: string) {
+        this.unsafeString = unsafeString;
+    }
+
+    /**
+     * Returns the character at the given index from the string.
+     * @param index The index of the wanted character.
+     * @returns The character at the given index.
+     */
+    public charAt(index: number): string {
+        return UtfString.charAt(this.unsafeString, index);
+    }
+
     /**
      * Returns the character at the given index from the given string.
      * @param str The string from which to get the character.
