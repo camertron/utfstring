@@ -31,6 +31,14 @@ describe("UtfString", () => {
             const str = "abc";
             expect(UtfString.charAt(str, 3)).toEqual("");
         });
+
+        it("doesn't pair regional indicators", () => {
+            const str = "🇸🇴🇫🇷";
+            expect(UtfString.charAt(str, 0)).toEqual("🇸");
+            expect(UtfString.charAt(str, 1)).toEqual("🇴");
+            expect(UtfString.charAt(str, 2)).toEqual("🇫");
+            expect(UtfString.charAt(str, 3)).toEqual("🇷");
+        });
     });
 });
 
