@@ -38,6 +38,14 @@ export class UtfString {
     }
 
     /**
+     * Returns the unsafe string the object is hiding.
+     * @returns The unsafe string.
+     */
+    public toString(): string {
+        return this.unsafeString;
+    }
+
+    /**
      * Returns the character at the given index from the string.
      * @param index The index of the wanted character.
      * @returns The character at the given index.
@@ -64,6 +72,15 @@ export class UtfString {
         const match = scanner.exec(characters);
 
         return match === null ? characters[0] : match[0];
+    }
+
+    /**
+     * Returns the Unicode codepoint at the given index.
+     * @param index The index of the wanted Unicode codepoint.
+     * @returns The Unicode codepoint at the given index.
+     */
+    public charCodeAt(index: number): number {
+        return Object.getPrototypeOf(this).constructor.charCodeAt(this.unsafeString, index);
     }
 
     /**
