@@ -1,4 +1,26 @@
-import { createUtfSafeCharScanner, createSurrogatePairScanner } from "./utils";
+/** Regular expression for matching surrogate pairs. */
+export const surrogatePairs = /[\uD800-\uDBFF][\uDC00-\uDFFF]/;
+
+/**
+ * Creates a regular expression that matches surrogate pairs.
+ * @returns The regular expression that matches surrogate pairs.
+ */
+export function createSurrogatePairScanner(): RegExp {
+    return new RegExp(surrogatePairs.source, "g");
+}
+
+/**
+ * Creates a regular expression that matches every character of a string and is UTF-safe.
+ * @returns The regular expression for matching every character of a string.
+ */
+export function createUtfSafeCharScannerHandlingSurrogatePairs(): RegExp {
+    const sources = new Array<string>();
+
+    sources.push(surrogatePairs.source);
+    sources.push("[^]");
+
+    return new RegExp(sources.join("|"), "g");
+}
 
 /**
  * Class with UTF-safe string operations.
@@ -11,14 +33,14 @@ export class UtfString {
      * @returns The character at the given index.
      */
     public static charAt(str: string, index: number): string {
-        const byteIndex = UtfString.findByteIndex(str, index);
+        const byteIndex = this.findByteIndex(str, index);
 
         if (byteIndex < 0 || byteIndex >= str.length) {
             return "";
         }
 
         const characters = str.slice(byteIndex, byteIndex + 8);
-        const scanner = createSurrogatePairScanner();
+        const scanner = this.createUtfSafeCharScanner();
         const match = scanner.exec(characters);
 
         return match === null ? characters[0] : match[0];
@@ -31,7 +53,7 @@ export class UtfString {
      * @returns The Unicode codepoint at the given index.
      */
     public static charCodeAt(str: string, index: number): number {
-        const byteIndex = UtfString.findSurrogateByteIndex(str, index);
+        const byteIndex = this.findSurrogateByteIndex(str, index);
 
         if (byteIndex < 0) {
             return NaN;
@@ -71,10 +93,10 @@ export class UtfString {
      *          -1 if the search value could not be found.
      */
     public static indexOf(str: string, searchValue: string, start = 0): number {
-        const startByteIndex = UtfString.findByteIndex(str, start);
+        const startByteIndex = this.findByteIndex(str, start);
         const index = str.indexOf(searchValue, startByteIndex);
 
-        return index < 0 ? -1 : UtfString.findCharIndex(str, index);
+        return index < 0 ? -1 : this.findCharIndex(str, index);
     }
 
     /**
@@ -92,11 +114,11 @@ export class UtfString {
         if (typeof start === "undefined") {
             index = str.lastIndexOf(searchValue);
         } else {
-            const startByteIndex = UtfString.findByteIndex(str, start);
+            const startByteIndex = this.findByteIndex(str, start);
             index = str.lastIndexOf(searchValue, startByteIndex);
         }
 
-        return index < 0 ? -1 : UtfString.findCharIndex(str, index);
+        return index < 0 ? -1 : this.findCharIndex(str, index);
     }
 
     /**
@@ -107,7 +129,7 @@ export class UtfString {
      * @returns The characters between the two given indices.
      */
     public static slice(str: string, start: number, finish?: number): string {
-        let startByteIndex = UtfString.findByteIndex(str, start);
+        let startByteIndex = this.findByteIndex(str, start);
 
         if (startByteIndex < 0) {
             startByteIndex = str.length;
@@ -118,7 +140,7 @@ export class UtfString {
         if (typeof finish === "undefined") {
             finishByteIndex = str.length;
         } else {
-            finishByteIndex = UtfString.findByteIndex(str, finish);
+            finishByteIndex = this.findByteIndex(str, finish);
 
             if (finishByteIndex < 0) {
                 finishByteIndex = str.length;
@@ -137,13 +159,13 @@ export class UtfString {
      */
     public static substr(str: string, start: number, length?: number): string {
         if (start < 0) {
-            start = UtfString.lengthOf(str) + start;
+            start = this.lengthOf(str) + start;
         }
 
         if (typeof length === "undefined") {
-            return UtfString.slice(str, start);
+            return this.slice(str, start);
         } else {
-            return UtfString.slice(str, start, start + length);
+            return this.slice(str, start, start + length);
         }
     }
 
@@ -155,7 +177,7 @@ export class UtfString {
      * @returns The characters starting at the given start index up to the start index plus the given length.
      */
     public static substring(str: string, start: number, length?: number): string {
-        return UtfString.substr(str, start, length);
+        return this.substr(str, start, length);
     }
 
     /**
@@ -165,7 +187,7 @@ export class UtfString {
      */
     public static lengthOf(str: string): number {
         // findCharIndex will return -1 if string is empty, so add 1
-        return UtfString.findCharIndex(str, str.length - 1) + 1;
+        return this.findCharIndex(str, str.length - 1) + 1;
     }
 
     /**
@@ -177,7 +199,7 @@ export class UtfString {
         const result = new Array<number>();
 
         for (let i = 0; i < str.length; i++) {
-            const codePoint = UtfString.charCodeAt(str, i);
+            const codePoint = this.charCodeAt(str, i);
 
             if (!codePoint) {
                 break;
@@ -195,7 +217,7 @@ export class UtfString {
      * @returns The string created from the codepoints.
      */
     public static codePointsToString(arr: number[]): string {
-        const chars = arr.map((a) => UtfString.fromCharCode(a));
+        const chars = arr.map((a) => this.fromCharCode(a));
         return chars.join("");
     }
 
@@ -254,7 +276,7 @@ export class UtfString {
      */
     public static stringToCharArray(str: string): string[] {
         const result = new Array<string>();
-        const scanner = createUtfSafeCharScanner();
+        const scanner = this.createUtfSafeCharScanner();
 
         let match: RegExpExecArray | null;
         do {
@@ -280,11 +302,11 @@ export class UtfString {
      *          -1 if the character index is equal to or higher than the length of the string.
      */
     public static findByteIndex(str: string, charIndex: number): number {
-        if (charIndex >= UtfString.lengthOf(str)) {
+        if (charIndex >= this.lengthOf(str)) {
             return -1;
         }
 
-        return UtfString.scan(str, createUtfSafeCharScanner(), charIndex);
+        return this.scan(str, this.createUtfSafeCharScanner(), charIndex);
     }
 
     /**
@@ -302,11 +324,11 @@ export class UtfString {
         }
 
         // optimization: don't iterate unless necessary
-        if (!UtfString.containsSurrogatePair(str)) {
+        if (!this.containsUnsafeUtfChars(str)) {
             return byteIndex;
         }
 
-        const scanner = createUtfSafeCharScanner();
+        const scanner = this.createUtfSafeCharScanner();
         let charCount = 0;
 
         while (scanner.exec(str) !== null) {
@@ -328,7 +350,7 @@ export class UtfString {
      *          -1 if no surrogate pair was found.
      */
     private static findSurrogateByteIndex(str: string, charIndex: number): number {
-        return UtfString.scan(str, createSurrogatePairScanner(), charIndex);
+        return this.scan(str, createSurrogatePairScanner(), charIndex);
     }
 
     /**
@@ -342,7 +364,7 @@ export class UtfString {
      */
     private static scan(str: string, scanner: RegExp, charIndex: number): number {
         // optimization: don't iterate unless it's necessary
-        if (!UtfString.containsSurrogatePair(str)) {
+        if (!this.containsUnsafeUtfChars(str)) {
             return charIndex;
         }
 
@@ -383,12 +405,28 @@ export class UtfString {
     }
 
     /**
+     * Creates a char scanner that matches unsafe UTF chars.
+     * @returns A char scanner that matches unsafe UTF chars.
+     */
+    protected static createUnsafeUtfCharFinder(): RegExp {
+        return createSurrogatePairScanner();
+    }
+
+    /**
+     * Creates a UTF-safe char scanner.
+     * @returns A UTF-safe char scanner.
+     */
+    protected static createUtfSafeCharScanner(): RegExp {
+        return createUtfSafeCharScannerHandlingSurrogatePairs();
+    }
+
+    /**
      * Checks if the given string contains surrogate pairs.
      * @param str The string that is checked.
      * @returns True if the given string contains surrogate pairs, false otherwise.
      */
-    private static containsSurrogatePair(str: string): boolean {
-        const scanner = createSurrogatePairScanner();
+    private static containsUnsafeUtfChars(str: string): boolean {
+        const scanner = this.createUnsafeUtfCharFinder();
         return scanner.test(str);
     }
 }
