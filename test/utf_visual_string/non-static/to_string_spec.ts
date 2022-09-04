@@ -3,7 +3,7 @@ import { UtfVisualString } from "../../../src/utf_visual_string";
 
 describe("UtfVisualString", () => {
     describe("#toString", () => {
-        it("with an empty string", () => {
+        it("works with an empty string", () => {
             const str = "";
             const utfString = new UtfVisualString(str);
             expect(utfString.charAt(3)).toEqual(str);

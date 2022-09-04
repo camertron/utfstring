@@ -3,7 +3,7 @@ import { UtfString } from "../../../src/utf_string";
 
 describe("UtfString", () => {
     describe("#toString", () => {
-        it("with an empty string", () => {
+        it("works with an empty string", () => {
             const str = "";
             const utfString = new UtfString(str);
             expect(utfString.charAt(3)).toEqual(str);
