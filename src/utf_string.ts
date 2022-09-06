@@ -51,7 +51,7 @@ export class UtfString {
      * @returns The character at the given index.
      */
     public charAt(index: number): UtfString {
-        const char = Object.getPrototypeOf(this).constructor.charAt(this.unsafeString, index);
+        const char = this.getClass().charAt(this.unsafeString, index);
         return new UtfString(char);
     }
 
@@ -81,7 +81,7 @@ export class UtfString {
      * @returns The Unicode codepoint at the given index.
      */
     public charCodeAt(index: number): number {
-        return Object.getPrototypeOf(this).constructor.charCodeAt(this.unsafeString, index);
+        return this.getClass().charCodeAt(this.unsafeString, index);
     }
 
     /**
@@ -129,6 +129,17 @@ export class UtfString {
         } else {
             return String.fromCharCode(charCode);
         }
+    }
+
+    /**
+     * Finds the first instance of the search value within the string. Starts at an optional offset.
+     * @param searchValue The value to search.
+     * @param start Optional start offset for the search.
+     * @returns The first instance of the search value within the string.
+     *          -1 if the search value could not be found.
+     */
+    public indexOf(searchValue: string | UtfString, start = 0): number {
+        return this.getClass().indexOf(this.unsafeString, searchValue.toString(), start);
     }
 
     /**
@@ -475,6 +486,15 @@ export class UtfString {
     private static containsUnsafeUtfChars(str: string): boolean {
         const scanner = this.createUnsafeUtfCharFinder();
         return scanner.test(str);
+    }
+
+    /**
+     * Returns the constructor function of this object.
+     * @returns The constructor function of this object.
+     */
+    private getClass(): typeof UtfString {
+        // gets the constructor function at runtime and therefore also works in derived classes
+        return Object.getPrototypeOf(this).constructor;
     }
 }
 
