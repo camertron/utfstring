@@ -50,8 +50,9 @@ export class UtfString {
      * @param index The index of the wanted character.
      * @returns The character at the given index.
      */
-    public charAt(index: number): string {
-        return Object.getPrototypeOf(this).constructor.charAt(this.unsafeString, index);
+    public charAt(index: number): UtfString {
+        const char = Object.getPrototypeOf(this).constructor.charAt(this.unsafeString, index);
+        return new UtfString(char);
     }
 
     /**

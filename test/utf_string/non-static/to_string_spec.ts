@@ -6,7 +6,7 @@ describe("UtfString", () => {
         it("works with an empty string", () => {
             const str = "";
             const utfString = new UtfString(str);
-            expect(utfString.charAt(3)).toEqual(str);
+            expect(utfString.toString()).toEqual(str);
         });
 
         it("works with standard ASCII characters", () => {

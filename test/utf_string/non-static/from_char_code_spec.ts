@@ -5,25 +5,21 @@ describe("UtfString", () => {
     describe("#fromCharCode", () => {
         it("works with standard ASCII characters", () => {
             const utfString = UtfString.fromCharCode(97);
-            expect(utfString).toBeInstanceOf(UtfString);
             expect(utfString.toString()).toEqual("a");
         });
 
         it("works with multi-byte characters", () => {
             const utfString = UtfString.fromCharCode(12354);
-            expect(utfString).toBeInstanceOf(UtfString);
             expect(utfString.toString()).toEqual("あ");
         });
 
         it("works with astral plane unicode characters", () => {
             const utfString = UtfString.fromCharCode(148771);
-            expect(utfString).toBeInstanceOf(UtfString);
             expect(utfString.toString()).toEqual("𤔣");
         });
 
         it("works with regional indicators", () => {
             const utfString = UtfString.fromCharCode(127467);
-            expect(utfString).toBeInstanceOf(UtfString);
             expect(utfString.toString()).toEqual("🇫");
         });
     });
