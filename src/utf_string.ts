@@ -160,6 +160,18 @@ export class UtfString {
     /**
      * Finds the last instance of the search value within the string.
      * Starts searching backwards at an optional offset, which can be negative.
+     * @param searchValue The value to search.
+     * @param start Optional start offset for the search.
+     * @returns The last instance of the search value within the string.
+     *          -1 if the search value could not be found.
+     */
+    public lastIndexOf(searchValue: string | UtfString, start?: number): number {
+        return this.getClass().lastIndexOf(this.unsafeString, searchValue.toString(), start);
+    }
+
+    /**
+     * Finds the last instance of the search value within the string.
+     * Starts searching backwards at an optional offset, which can be negative.
      * @param str The string in which to search for the value.
      * @param searchValue The value to search.
      * @param start Optional start offset for the search.
