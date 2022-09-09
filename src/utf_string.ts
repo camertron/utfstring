@@ -64,6 +64,16 @@ export class UtfString {
     }
 
     /**
+     * Creates a new UTF-safe string object by appending the given string.
+     * @param str The string to append.
+     * @returns A new UTF-safe string object with the appended string.
+     */
+    public append(str: string | UtfString): UtfString {
+        const ctor = this.getClass();
+        return new ctor(this.unsafeString + str.toString());
+    }
+
+    /**
      * Returns the character at the given index from the string.
      * @param index The index of the wanted character.
      * @returns The character at the given index.
