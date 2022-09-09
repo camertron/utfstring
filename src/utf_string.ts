@@ -398,6 +398,15 @@ export class UtfString {
     }
 
     /**
+     * Converts an array of UTF-16 bytes into a UTF-safe string object.
+     * @param arr The array of UTF-16 bytes that should be converted.
+     * @returns The UTF-safe string object created from the array of UTF-16 bytes.
+     */
+    public static fromBytes(arr: number[]): UtfString {
+        return new this(this.bytesToString(arr));
+    }
+
+    /**
      * Converts an array of UTF-16 bytes into a string.
      * @param arr The array of UTF-16 bytes that should be converted.
      * @returns The string created from the array of UTF-16 bytes.
