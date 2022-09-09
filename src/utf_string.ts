@@ -201,6 +201,17 @@ export class UtfString {
     }
 
     /**
+     * Returns the characters between the two given indices in the string.
+     * @param start The index from which to start extracting the characters.
+     * @param finish The index at which to end extracting the characters.
+     * @returns The characters between the two given indices.
+     */
+    public slice(start: number, finish?: number): UtfString {
+        const str = this.getClass().slice(this.unsafeString, start, finish);
+        return new UtfString(str);
+    }
+
+    /**
      * Returns the characters between the two given indices in the given string.
      * @param str The string from which to extract the characters.
      * @param start The index from which to start extracting the characters.
