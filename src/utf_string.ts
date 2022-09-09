@@ -242,6 +242,17 @@ export class UtfString {
 
     /**
      * Returns the characters starting at the given start index up to the start index plus the given length.
+     * @param start The index from which to start extracting the characters.
+     * @param length The number of characters to extract.
+     * @returns The characters starting at the given start index up to the start index plus the given length.
+     */
+    public substr(start: number, length?: number): UtfString {
+        const str = this.getClass().substr(this.unsafeString, start, length);
+        return new UtfString(str);
+    }
+
+    /**
+     * Returns the characters starting at the given start index up to the start index plus the given length.
      * @param str The string from which to extract the characters.
      * @param start The index from which to start extracting the characters.
      * @param length The number of characters to extract.
