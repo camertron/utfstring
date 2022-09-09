@@ -487,6 +487,18 @@ export class UtfString {
     }
 
     /**
+     * Finds the character index for the given byte index in the string.
+     * Note: a "byte index" is really a "JavaSciprt string index", not a true byte offset.
+     * Use this function to convert a JavaScript string index to (the closest) UTF character boundary.
+     * @param byteIndex The byte index for which to find the character index.
+     * @returns The character index for the byte index in the string.
+     *          -1 if the byte index is equal to or higher than the number of bytes in the string.
+     */
+    public findCharIndex(byteIndex: number): number {
+        return this.getClass().findCharIndex(this.unsafeString, byteIndex);
+    }
+
+    /**
      * Finds the character index for the given byte index in the given string.
      * Note: a "byte index" is really a "JavaSciprt string index", not a true byte offset.
      * Use this function to convert a JavaScript string index to (the closest) UTF character boundary.
