@@ -46,6 +46,24 @@ export class UtfString {
     }
 
     /**
+     * Checks if the search value is within the string.
+     * @param searchValue The value to search.
+     * @returns True if the search value was found in the string, false otherwise.
+     */
+    public contains(searchValue: string | UtfString): boolean {
+        return this.indexOf(searchValue) !== -1;
+    }
+
+    /**
+     * Checks if the given string equals the string.
+     * @param str The string to compare.
+     * @returns True if the strings are equals, false otherwise.
+     */
+    public equals(str: string | UtfString): boolean {
+        return this.unsafeString === str.toString();
+    }
+
+    /**
      * Returns the character at the given index from the string.
      * @param index The index of the wanted character.
      * @returns The character at the given index.
@@ -141,15 +159,6 @@ export class UtfString {
      */
     public indexOf(searchValue: string | UtfString, start = 0): number {
         return this.getClass().indexOf(this.unsafeString, searchValue.toString(), start);
-    }
-
-    /**
-     * Checks if the search value is within the string.
-     * @param searchValue The value to search.
-     * @returns True if the search value was found in the string, false otherwise.
-     */
-    public contains(searchValue: string | UtfString): boolean {
-        return this.indexOf(searchValue) !== -1;
     }
 
     /**
