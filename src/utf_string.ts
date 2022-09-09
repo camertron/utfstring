@@ -143,6 +143,15 @@ export class UtfString {
     }
 
     /**
+     * Checks if the search value is within the string.
+     * @param searchValue The value to search.
+     * @returns True if the search value was found in the string, false otherwise.
+     */
+    public contains(searchValue: string | UtfString): boolean {
+        return this.indexOf(searchValue) !== -1;
+    }
+
+    /**
      * Finds the first instance of the search value within the string. Starts at an optional offset.
      * @param str The string in which to search for the value.
      * @param searchValue The value to search.
