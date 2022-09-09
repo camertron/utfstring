@@ -339,6 +339,15 @@ export class UtfString {
     }
 
     /**
+     * Converts an array of codepoints into a UTF-safe string object.
+     * @param arr The codepoints that should be converted.
+     * @returns The UTF-safe string object created from the codepoints.
+     */
+    public static fromCodePoints(arr: number[]): UtfString {
+        return new this(this.codePointsToString(arr));
+    }
+
+    /**
      * Converts an array of codepoints into a string.
      * @param arr The codepoints that should be converted.
      * @returns The string created from the codepoints.
