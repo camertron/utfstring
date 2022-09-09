@@ -292,6 +292,14 @@ export class UtfString {
     }
 
     /**
+     * Returns the number of logical characters in the string.
+     * @returns The number of logical characters in the string.
+     */
+    public get length(): number {
+        return this.getClass().lengthOf(this.unsafeString);
+    }
+
+    /**
      * Returns the number of logical characters in the given string.
      * @param str The string whose length is calculated.
      * @returns The number of logical characters in the given string.
