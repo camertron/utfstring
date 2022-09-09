@@ -425,6 +425,15 @@ export class UtfString {
     }
 
     /**
+     * Converts the string into an array of individual logical characters.
+     * Note that each entry in the returned array may be more than one UTF-16 character.
+     * @returns The array containing the individual logical characters taken from the string.
+     */
+    public toCharArray(): string[] {
+        return this.getClass().stringToCharArray(this.unsafeString);
+    }
+    
+    /**
      * Converts the given string into an array of individual logical characters.
      * Note that each entry in the returned array may be more than one UTF-16 character.
      * @param str The string that should be converted.
