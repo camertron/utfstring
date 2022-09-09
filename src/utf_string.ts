@@ -310,6 +310,14 @@ export class UtfString {
     }
 
     /**
+     * Converts the string into an array of codepoints.
+     * @returns The codepoints taken from the string.
+     */
+    public toCodePoints(): number [] {
+        return this.getClass().stringToCodePoints(this.unsafeString);
+    }
+
+    /**
      * Converts a string into an array of codepoints.
      * @param str The string that should be converted.
      * @returns The codepoints taken from the string.
