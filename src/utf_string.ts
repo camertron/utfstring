@@ -458,6 +458,18 @@ export class UtfString {
     }
 
     /**
+     * Finds the byte index for the given character index in the string.
+     * Note: a "byte index" is really a "JavaScript string index", not a true byte offset.
+     * Use this function to convert a UTF character boundary to a JavaScript string index.
+     * @param charIndex The character index for which to find the byte index.
+     * @returns The byte index for the character index in the string.
+     *          -1 if the character index is equal to or higher than the length of the string.
+     */
+    public findByteIndex(charIndex: number): number {
+        return this.getClass().findByteIndex(this.unsafeString, charIndex);
+    }
+
+    /**
      * Finds the byte index for the given character index in the given string.
      * Note: a "byte index" is really a "JavaScript string index", not a true byte offset.
      * Use this function to convert a UTF character boundary to a JavaScript string index.
