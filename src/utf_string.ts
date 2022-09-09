@@ -51,8 +51,9 @@ export class UtfString {
      * @returns The character at the given index.
      */
     public charAt(index: number): UtfString {
-        const char = this.getClass().charAt(this.unsafeString, index);
-        return new UtfString(char);
+        const ctor = this.getClass();
+        const char = ctor.charAt(this.unsafeString, index);
+        return new ctor(char);
     }
 
     /**
@@ -207,8 +208,9 @@ export class UtfString {
      * @returns The characters between the two given indices.
      */
     public slice(start: number, finish?: number): UtfString {
+        const ctor = this.getClass();
         const str = this.getClass().slice(this.unsafeString, start, finish);
-        return new UtfString(str);
+        return new ctor(str);
     }
 
     /**
@@ -247,8 +249,9 @@ export class UtfString {
      * @returns The characters starting at the given start index up to the start index plus the given length.
      */
     public substr(start: number, length?: number): UtfString {
+        const ctor = this.getClass();
         const str = this.getClass().substr(this.unsafeString, start, length);
-        return new UtfString(str);
+        return new ctor(str);
     }
 
     /**

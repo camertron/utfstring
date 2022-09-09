@@ -3,6 +3,11 @@ import { UtfVisualString } from "../../../src/utf_visual_string";
 
 describe("UtfVisualString", () => {
     describe("#charAt", () => {
+        it("returns an object of type UtfVisualString", () => {
+            const utfString = new UtfVisualString("abc");
+            expect(utfString.charAt(0)).toBeInstanceOf(UtfVisualString);
+        });
+
         it("works with standard ASCII characters", () => {
             const utfString = new UtfVisualString("abc");
             expect(utfString.charAt(0).toString()).toEqual("a");

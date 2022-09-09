@@ -3,6 +3,11 @@ import { UtfVisualString } from "../../../src/utf_visual_string";
 
 describe("UtfVisualString", () => {
     describe("#slice", () => {
+        it("returns an object of type UtfVisualString", () => {
+            const utfString = new UtfVisualString("abc");
+            expect(utfString.slice(0, 1)).toBeInstanceOf(UtfVisualString);
+        });
+
         describe("with regional indicators", () => {
             const utfString = new UtfVisualString("🇸🇴🇫🇷");
 

@@ -3,6 +3,11 @@ import { UtfString } from "../../../src/utf_string";
 
 describe("UtfString", () => {
     describe("#substr", () => {
+        it("returns an object of type UtfString", () => {
+            const utfString = new UtfString("abc");
+            expect(utfString.substr(0, 1)).toBeInstanceOf(UtfString);
+        });
+
         describe("with standard ASCII characters", () => {
             const utfString = new UtfString("abc");
 
