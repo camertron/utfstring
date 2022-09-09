@@ -3,6 +3,11 @@ import { UtfString } from "../../../src/utf_string";
 
 describe("UtfString", () => {
     describe("#fromCharCode", () => {
+        it("returns an object of type UtfString", () => {
+            const utfString = UtfString.fromCharCode(97);
+            expect(utfString).toBeInstanceOf(UtfString);
+        });
+
         it("works with standard ASCII characters", () => {
             const utfString = UtfString.fromCharCode(97);
             expect(utfString.toString()).toEqual("a");

@@ -114,7 +114,7 @@ export class UtfString {
      * @returns The UTF-safe string object for the given Unicode codepoint.
      */
     public static fromCharCode(charCode: number): UtfString {
-        return new UtfString(this.stringFromCharCode(charCode));
+        return new this(this.stringFromCharCode(charCode));
     }
 
     /**
