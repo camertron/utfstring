@@ -361,6 +361,14 @@ export class UtfString {
     }
 
     /**
+     * Converts the string into an array of UTF-16 bytes.
+     * @returns The UTF-16 bytes created from the string.
+     */
+    public toBytes(): number[] {
+        return this.getClass().stringToBytes(this.unsafeString);
+    }
+
+    /**
      * Converts a string into an array of UTF-16 bytes.
      * @param str The string that should be converted.
      * @returns The UTF-16 bytes created from the string.
