@@ -48,13 +48,13 @@ export class UtfString {
     }
 
     /**
-     * Creates a new UTF-safe string object by appending the given string.
-     * @param str The string to append.
-     * @returns A new UTF-safe string object with the appended string.
+     * Creates a new UTF-safe string object by concatenating the given strings.
+     * @param arr The strings to concatenate.
+     * @returns A new UTF-safe string object with the concatenated strings.
      */
-    public append(str: string | UtfString): UtfString {
+    public concat(...arr: Array<string | UtfString>): UtfString {
         const ctor = this.getClass();
-        return new ctor(this.unsafeString + str.toString());
+        return new ctor(this.unsafeString + arr.map((x) => x.toString()).join(""));
     }
 
     /**
