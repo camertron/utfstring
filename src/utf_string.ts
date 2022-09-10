@@ -38,6 +38,16 @@ export class UtfString {
     }
 
     /**
+     * Iterator that enables the usage of for-of loops on instances of this class.
+     * @returns An iterator that returns each character in the string separately.
+     */
+    *[Symbol.iterator](): IterableIterator<UtfString> {
+        for (let i = 0; i < this.length; ++i) {
+            yield this.charAt(i);
+        }
+    }
+
+    /**
      * Creates a new UTF-safe string object by appending the given string.
      * @param str The string to append.
      * @returns A new UTF-safe string object with the appended string.
