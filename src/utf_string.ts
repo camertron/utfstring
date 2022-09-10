@@ -38,20 +38,13 @@ export class UtfString {
     }
 
     /**
-     * Returns the unsafe string the object is hiding.
-     * @returns The unsafe string.
+     * Creates a new UTF-safe string object by appending the given string.
+     * @param str The string to append.
+     * @returns A new UTF-safe string object with the appended string.
      */
-    public toString(): string {
-        return this.unsafeString;
-    }
-
-    /**
-     * Checks if the search value is within the string.
-     * @param searchValue The value to search.
-     * @returns True if the search value was found in the string, false otherwise.
-     */
-    public contains(searchValue: string | UtfString): boolean {
-        return this.indexOf(searchValue) !== -1;
+    public append(str: string | UtfString): UtfString {
+        const ctor = this.getClass();
+        return new ctor(this.unsafeString + str.toString());
     }
 
     /**
@@ -64,13 +57,20 @@ export class UtfString {
     }
 
     /**
-     * Creates a new UTF-safe string object by appending the given string.
-     * @param str The string to append.
-     * @returns A new UTF-safe string object with the appended string.
+     * Checks if the search value is within the string.
+     * @param searchValue The value to search.
+     * @returns True if the search value was found in the string, false otherwise.
      */
-    public append(str: string | UtfString): UtfString {
-        const ctor = this.getClass();
-        return new ctor(this.unsafeString + str.toString());
+    public includes(searchValue: string | UtfString): boolean {
+        return this.indexOf(searchValue) !== -1;
+    }
+
+    /**
+     * Returns the unsafe string the object is hiding.
+     * @returns The unsafe string.
+     */
+    public toString(): string {
+        return this.unsafeString;
     }
 
     /**
@@ -335,7 +335,7 @@ export class UtfString {
      * Converts the string into an array of codepoints.
      * @returns The codepoints taken from the string.
      */
-    public toCodePoints(): number [] {
+    public toCodePoints(): number[] {
         return this.getClass().stringToCodePoints(this.unsafeString);
     }
 
@@ -451,7 +451,7 @@ export class UtfString {
     public toCharArray(): string[] {
         return this.getClass().stringToCharArray(this.unsafeString);
     }
-    
+
     /**
      * Converts the given string into an array of individual logical characters.
      * Note that each entry in the returned array may be more than one UTF-16 character.
