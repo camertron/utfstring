@@ -58,6 +58,16 @@ export class UtfString {
     }
 
     /**
+     * Determines whether the string ends with the characters of a specified search string.
+     * @param str The characters to be searched for at the end of the string.
+     * @param endPos The end position at which search string is expected to be found.
+     * @returns True if the string ends with the given search string, false otherwise.
+     */
+    public endsWith(str: string | UtfString, endPos?: number): boolean {
+        return this.unsafeString.endsWith(str.toString(), endPos);
+    }
+
+    /**
      * Checks if the given string equals the string.
      * @param str The string to compare.
      * @returns True if the strings are equals, false otherwise.
