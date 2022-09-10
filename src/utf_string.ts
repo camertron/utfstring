@@ -60,7 +60,7 @@ export class UtfString {
     /**
      * Determines whether the string ends with the characters of a specified search string.
      * @param str The characters to be searched for at the end of the string.
-     * @param endPos The end position at which search string is expected to be found.
+     * @param endPos The end position at which the search string is expected to be found.
      * @returns True if the string ends with the given search string, false otherwise.
      */
     public endsWith(str: string | UtfString, endPos?: number): boolean {
@@ -83,6 +83,16 @@ export class UtfString {
      */
     public includes(searchValue: string | UtfString): boolean {
         return this.indexOf(searchValue) !== -1;
+    }
+
+    /**
+     * Determines whether the string starts with the characters of a specified search string.
+     * @param str The characters to be searched for at the start of the string.
+     * @param startPos The start position at which the search string is expected to be found.
+     * @returns True if the string starts with the given search string, false otherwise.
+     */
+    public startsWith(str: string | UtfString, startPos?: number): boolean {
+        return this.unsafeString.startsWith(str.toString(), startPos);
     }
 
     /**
