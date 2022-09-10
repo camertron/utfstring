@@ -10,7 +10,7 @@ describe("UtfString", () => {
 
         it("returns a new object", () => {
             const utfString = new UtfString("abc");
-            expect(utfString.append("d")).not.toEqual(utfString);
+            expect(utfString.append("d") === utfString).toBeFalsy();
         });
 
         it("works with a normal string", () => {
