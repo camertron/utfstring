@@ -86,6 +86,18 @@ export class UtfString {
     }
 
     /**
+     * Creates a new UTF-safe string object by padding the string with a given string (repeated, if needed)
+     * so that the resulting string reaches a given length. The padding is applied at the end of the string.
+     * @param targetLength The length of the resulting string once the string has been padded.
+     * @param padString The string to pad the string with.
+     * @returns A new UTF-safe string object of the specified target length with the padding string applied at the end.
+     */
+    public padEnd(targetLength: number, padString?: string | UtfString): UtfString {
+        const ctor = this.getClass();
+        return new ctor(ctor.padEnd(this.unsafeString, targetLength, padString?.toString()));
+    }
+
+    /**
      * Determines whether the string starts with the characters of a specified search string.
      * @param str The characters to be searched for at the start of the string.
      * @param startPos The start position at which the search string is expected to be found.
@@ -251,6 +263,38 @@ export class UtfString {
     }
 
     /**
+     * Creates a new string by padding the string with a given string (repeated, if needed) so that the resulting string
+     * reaches a given length. The padding is applied at the end of the string.
+     * @param str The string that should be padded to the target length.
+     * @param targetLength The length of the resulting string once the string has been padded.
+     * @param padString The string to pad the string with.
+     * @returns A new string of the specified target length with the padding string applied at the end.
+     */
+    public static padEnd(str: string, targetLength: number, padString?: string): string {
+        if (targetLength <= this.lengthOf(str)) {
+            return str;
+        }
+
+        if (!padString) {
+            padString = " ";
+        }
+
+        let iPadStr = 0;
+        let newStr = str;
+
+        do {
+            newStr += this.charAt(padString, iPadStr);
+            ++iPadStr;
+
+            if (iPadStr >= this.lengthOf(padString)) {
+                iPadStr = 0;
+            }
+        } while (this.lengthOf(newStr) < targetLength);
+
+        return newStr;
+    }
+
+    /**
      * Returns the characters between the two given indices in the string.
      * @param start The index from which to start extracting the characters.
      * @param finish The index at which to end extracting the characters.
@@ -258,7 +302,7 @@ export class UtfString {
      */
     public slice(start: number, finish?: number): UtfString {
         const ctor = this.getClass();
-        const str = this.getClass().slice(this.unsafeString, start, finish);
+        const str = ctor.slice(this.unsafeString, start, finish);
         return new ctor(str);
     }
 
@@ -299,7 +343,7 @@ export class UtfString {
      */
     public substr(start: number, length?: number): UtfString {
         const ctor = this.getClass();
-        const str = this.getClass().substr(this.unsafeString, start, length);
+        const str = ctor.substr(this.unsafeString, start, length);
         return new ctor(str);
     }
 
