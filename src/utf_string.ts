@@ -111,6 +111,30 @@ export class UtfString {
     }
 
     /**
+     * Creates a new UTF-safe string object with one, some, or all matches of a pattern replaced by a replacement.
+     * The pattern can be a string or a RegExp, and the replacement can be a string or a function called for each match.
+     * If pattern is a string, only the first occurrence will be replaced.
+     * @param pattern The pattern that should be replaced within the string.
+     * @param replacement This replaces the strings matched by the pattern.
+     * @returns A new UTF-safe string object with the pattern occurrences replaced by the given replacement.
+     */
+    public replace(
+        pattern: string | UtfString | RegExp | { [Symbol.replace](string: string, replaceValue: string): string },
+        replacement: string | UtfString | ((substring: string, ...args: any[]) => string)
+    ): UtfString;
+    public replace(pattern: string | UtfString, replacement: string | UtfString): UtfString {
+        if (pattern instanceof UtfString) {
+            pattern = pattern.toString();
+        }
+        if (replacement instanceof UtfString) {
+            replacement = replacement.toString();
+        }
+
+        const ctor = this.getClass();
+        return new ctor(this.unsafeString.replace(pattern, replacement));
+    }
+
+    /**
      * Returns a new string which contains the specified number of copies of the string on which it was called.
      * @param count The number of times the string should be repeated.
      * @returns The new string which contains a specified number of copies of the original string.
