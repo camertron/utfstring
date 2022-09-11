@@ -111,6 +111,16 @@ export class UtfString {
     }
 
     /**
+     * Returns a new string which contains the specified number of copies of the string on which it was called.
+     * @param count The number of times the string should be repeated.
+     * @returns The new string which contains a specified number of copies of the original string.
+     */
+    public repeat(count: number): UtfString {
+        const ctor = this.getClass();
+        return new ctor(this.unsafeString.repeat(count));
+    }
+
+    /**
      * Determines whether the string starts with the characters of a specified search string.
      * @param str The characters to be searched for at the start of the string.
      * @param startPos The start position at which the search string is expected to be found.
