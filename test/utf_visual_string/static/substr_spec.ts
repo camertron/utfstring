@@ -30,7 +30,7 @@ describe("UtfVisualString", () => {
             });
 
             it("returns an empty string if the negative start value is out-of-bounds", () => {
-                expect(UtfVisualString.substr(str, -3, 1)).toEqual("");
+                expect(UtfVisualString.substr(str, -3, 1)).toEqual("🇸🇴");
             });
         });
     });

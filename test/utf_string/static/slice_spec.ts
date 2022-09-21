@@ -25,6 +25,17 @@ describe("UtfString", () => {
                 expect(UtfString.slice(str, 3)).toEqual("");
                 expect(UtfString.slice(str, 3, 4)).toEqual("");
             });
+
+            it("works with negative start index", () => {
+                expect(UtfString.slice(str, -1)).toEqual("c");
+                expect(UtfString.slice(str, -2, 3)).toEqual("bc");
+            });
+
+            it("works with negative end index", () => {
+                expect(UtfString.slice(str, 0, -2)).toEqual("a");
+                expect(UtfString.slice(str, 1, -1)).toEqual("b");
+                expect(UtfString.slice(str, 0, -1)).toEqual("ab");
+            });
         });
 
         describe("with multi-byte characters", () => {
