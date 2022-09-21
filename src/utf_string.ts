@@ -202,7 +202,7 @@ export class UtfString {
   public static charAt(str: string, index: number): string {
     const byteIndex = this.findByteIndex(str, index);
 
-    if (byteIndex < 0 || byteIndex >= str.length) {
+    if (byteIndex < 0) {
       return "";
     }
 
@@ -222,14 +222,14 @@ export class UtfString {
     return this.getClass().charCodeAt(this.unsafeString, index);
   }
 
-    /**
+  /**
    * Returns the Unicode codepoint at the given index.
    * @param index The index of the wanted Unicode codepoint.
    * @returns The Unicode codepoint at the given index.
    */
-     public codePointAt(index: number): number {
-      return this.getClass().charCodeAt(this.unsafeString, index);
-    }
+  public codePointAt(index: number): number {
+    return this.getClass().charCodeAt(this.unsafeString, index);
+  }
 
   /**
    * Returns the Unicode codepoint at the given index from the given string.
@@ -460,26 +460,26 @@ export class UtfString {
       start = 0;
     }
     if (start < 0) {
-      start = str.length + start;
+      start = this.lengthOf(str) + start;
     }
     if (end && end < 0) {
-      end = str.length + end;
+      end = this.lengthOf(str) + end;
     }
     let startByteIndex = this.findByteIndex(str, start);
 
     if (startByteIndex < 0) {
-      startByteIndex = str.length;
+      startByteIndex = this.lengthOf(str);
     }
 
     let finishByteIndex: number;
 
     if (typeof end === "undefined") {
-      finishByteIndex = str.length;
+      finishByteIndex = this.lengthOf(str);
     } else {
       finishByteIndex = this.findByteIndex(str, end);
 
       if (finishByteIndex < 0) {
-        finishByteIndex = str.length;
+        finishByteIndex = this.lengthOf(str);
       }
     }
 
@@ -505,16 +505,12 @@ export class UtfString {
    * @param length The number of characters to extract.
    * @returns The characters starting at the given start index up to the start index plus the given length.
    */
-  public static substr(
-    str: string,
-    start?: number,
-    length?: number
-  ): string {
+  public static substr(str: string, start?: number, length?: number): string {
     if (start === undefined || isNaN(start)) {
       start = 0;
     }
     if (start < 0) {
-      start = Math.max(this.lengthOf(str) + start,0);
+      start = Math.max(this.lengthOf(str) + start, 0);
     }
 
     if (typeof length === "undefined" || isNaN(length)) {
@@ -548,7 +544,7 @@ export class UtfString {
       start = 0;
     }
     if (end === undefined) {
-      end = str.length;
+      end = this.lengthOf(str);
     }
     if (end < 0) {
       end = 0;
@@ -575,8 +571,8 @@ export class UtfString {
    * @param limit — A value used to limit the number of elements returned in the array.
    */
   public split(seperator: string, limit?: number): UtfString[] {
-    if(seperator === ""){
-      return [...this].slice(0,limit);
+    if (seperator === "") {
+      return [...this].slice(0, limit);
     }
     return this.unsafeString
       .split(seperator, limit)
@@ -948,8 +944,8 @@ export class UtfString {
   /**
    * Returns a string which concatenates the values from the given array.
    * @param items An Array of items, which are joined.
-   * @param seperator 
-   * @returns 
+   * @param seperator
+   * @returns
    */
   public static join(items: any[], seperator = ","): UtfString {
     let text = "";
