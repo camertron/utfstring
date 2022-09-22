@@ -1,3 +1,5 @@
+import { isDefined, isRealNumber } from "./utils";
+
 /** Regular expression for matching surrogate pairs. */
 export const surrogatePairs = /[\uD800-\uDBFF][\uDC00-\uDFFF]/;
 
@@ -397,7 +399,7 @@ export class UtfString {
      * @param finish The index at which to end extracting the characters.
      * @returns The characters between the two given indices.
      */
-    public slice(start: number, finish?: number): UtfString {
+    public slice(start?: number, finish?: number): UtfString {
         const ctor = this.getClass();
         const str = ctor.slice(this.unsafeString, start, finish);
         return new ctor(str);
@@ -411,31 +413,26 @@ export class UtfString {
      * @returns The characters between the two given indices.
      */
     public static slice(str: string, start?: number, end?: number): string {
-        if (typeof start === "undefined") {
+        if (!isRealNumber(start)) {
             start = 0;
-        }
-        if (start < 0) {
+        } else if (start < 0) {
             start = this.lengthOf(str) + start;
         }
-        if (end && end < 0) {
+
+        if (!isRealNumber(end) || end >= this.lengthOf(str)) {
+            end = str.length;
+        } else if (end < 0) {
             end = this.lengthOf(str) + end;
         }
-        let startByteIndex = this.findByteIndex(str, start);
 
+        let startByteIndex = this.findByteIndex(str, start);
         if (startByteIndex < 0) {
-            startByteIndex = this.lengthOf(str);
+            startByteIndex = str.length;
         }
 
-        let finishByteIndex: number;
-
-        if (typeof end === "undefined") {
-            finishByteIndex = this.lengthOf(str);
-        } else {
-            finishByteIndex = this.findByteIndex(str, end);
-
-            if (finishByteIndex < 0) {
-                finishByteIndex = this.lengthOf(str);
-            }
+        let finishByteIndex = this.findByteIndex(str, end);
+        if (finishByteIndex < 0) {
+            finishByteIndex = str.length;
         }
 
         return str.slice(startByteIndex, finishByteIndex);
@@ -447,7 +444,7 @@ export class UtfString {
      * @param length The number of characters to extract.
      * @returns The characters starting at the given start index up to the start index plus the given length.
      */
-    public substr(start: number, length?: number): UtfString {
+    public substr(start?: number, length?: number): UtfString {
         const ctor = this.getClass();
         const str = ctor.substr(this.unsafeString, start, length);
         return new ctor(str);
@@ -461,14 +458,24 @@ export class UtfString {
      * @returns The characters starting at the given start index up to the start index plus the given length.
      */
     public static substr(str: string, start?: number, length?: number): string {
-        if (start === undefined || isNaN(start)) {
+        if (!isRealNumber(start)) {
             start = 0;
         }
+
+        if (isDefined(length)) {
+            if (isNaN(length)) {
+                length = 0;
+            }
+            if (length <= 0) {
+                return "";
+            }
+        }
+
         if (start < 0) {
             start = Math.max(this.lengthOf(str) + start, 0);
         }
 
-        if (typeof length === "undefined" || isNaN(length)) {
+        if (!isDefined(length)) {
             return this.slice(str, start);
         } else {
             return this.slice(str, start, start + length);
@@ -481,7 +488,7 @@ export class UtfString {
      * @param end The index to which characters are extracted.
      * @returns The characters starting at the given start index up to the end index.
      */
-    public substring(start: number, end?: number): UtfString {
+    public substring(start?: number, end?: number): UtfString {
         return new UtfString(this.getClass().substring(this.unsafeString, start, end));
     }
 
@@ -493,15 +500,16 @@ export class UtfString {
      * @returns The characters starting at the given start index up to the end index.
      */
     public static substring(str: string, start?: number, end?: number): string {
-        if (start === undefined || start < 0) {
+        if (!isRealNumber(start) || start < 0) {
             start = 0;
         }
-        if (end === undefined) {
+
+        if (!isDefined(end)) {
             end = this.lengthOf(str);
-        }
-        if (end < 0) {
+        } else if (isNaN(end)) {
             end = 0;
         }
+
         if (start > end) {
             [start, end] = [end, start];
         }

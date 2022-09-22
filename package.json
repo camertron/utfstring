@@ -37,6 +37,6 @@
         "clean": "rimraf dist",
         "build": "npx tsc",
         "clean-build": "npm run clean && npm run build",
-        "test": "mocha -r ts-node/register 'test/**/*.ts'"
+        "test": "mocha -r ts-node/register -reporter min 'test/**/*.ts'"
     }
 }

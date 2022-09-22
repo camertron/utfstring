@@ -32,24 +32,24 @@ describe("UtfString", () => {
                 expect(UtfString.substr(str, -3, 1)).toEqual("a");
             });
 
-            it("treat a negative start value which is out-of-bounds as 0", () => {
+            it("treats a negative start value which is out-of-bounds as 0", () => {
                 expect(UtfString.substr(str, -4, 1)).toEqual("a");
             });
 
-            it("accepts undefined start value is undefined", () => {
+            it("treats an undefined start value as 0", () => {
                 expect(UtfString.substr(str, undefined, 3)).toEqual("abc");
             });
 
-            it("accepts undefined length value", () => {
-                expect(UtfString.substr(str, 0)).toEqual("abc");
-            });
-
-            it("accepts NaN start value is undefined", () => {
+            it("treats a NaN start value as 0", () => {
                 expect(UtfString.substr(str, NaN, 3)).toEqual("abc");
             });
 
-            it("accepts NaN length value is undefined", () => {
-                expect(UtfString.substr(str, 0, NaN)).toEqual("abc");
+            it("accepts an undefined length value", () => {
+                expect(UtfString.substr(str, 0)).toEqual("abc");
+            });
+
+            it("treats a length value of NaN as 0", () => {
+                expect(UtfString.substr(str, 0, NaN)).toEqual("");
             });
         });
 
@@ -88,7 +88,7 @@ describe("UtfString", () => {
                 expect(UtfString.substr(str, -5, 1)).toEqual("あ");
             });
 
-            it("treat a negative start value which is out-of-bounds as 0", () => {
+            it("treats a negative start value which is out-of-bounds as 0", () => {
                 expect(UtfString.substr(str, -6, 1)).toEqual("あ");
             });
         });
@@ -125,7 +125,7 @@ describe("UtfString", () => {
                 expect(UtfString.substr(str, -4, 1)).toEqual("𤔣");
             });
 
-            it("treat a negative start value which is out-of-bounds as 0", () => {
+            it("treats a negative start value which is out-of-bounds as 0", () => {
                 expect(UtfString.substr(str, -5, 1)).toEqual("𤔣");
             });
         });

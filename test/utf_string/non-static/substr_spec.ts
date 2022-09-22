@@ -37,7 +37,7 @@ describe("UtfString", () => {
                 expect(utfString.substr(-3, 1).toString()).toEqual("a");
             });
 
-            it("treat a negative start value which is out-of-bounds as 0", () => {
+            it("treats a negative start value which is out-of-bounds as 0", () => {
                 expect(utfString.substr(-4, 1).toString()).toEqual("a");
             });
         });
@@ -77,7 +77,7 @@ describe("UtfString", () => {
                 expect(utfString.substr(-5, 1).toString()).toEqual("あ");
             });
 
-            it("treat a negative start value which is out-of-bounds as 0", () => {
+            it("treats a negative start value which is out-of-bounds as 0", () => {
                 expect(utfString.substr(-6, 1).toString()).toEqual("あ");
             });
         });
@@ -114,7 +114,7 @@ describe("UtfString", () => {
                 expect(utfString.substr(-4, 1).toString()).toEqual("𤔣");
             });
 
-            it("treat a negative start value which is out-of-bounds as 0", () => {
+            it("treats a negative start value which is out-of-bounds as 0", () => {
                 expect(utfString.substr(-5, 1).toString()).toEqual("𤔣");
             });
         });

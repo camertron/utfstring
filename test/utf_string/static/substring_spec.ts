@@ -34,15 +34,15 @@ describe("UtfString", () => {
                 expect(UtfString.substring(str, -3, 1)).toEqual("a");
             });
 
-            it("accepts undefined start value", () => {
+            it("accepts an undefined start value", () => {
                 expect(UtfString.substring(str, undefined, 3)).toEqual("abc");
             });
 
-            it("accepts NaN start value", () => {
+            it("accepts NaN as start value", () => {
                 expect(UtfString.substring(str, NaN, 3)).toEqual("abc");
             });
 
-            it("accepts NaN length value", () => {
+            it("accepts NaN as end value", () => {
                 expect(UtfString.substring(str, 0, NaN)).toEqual("");
             });
         });
