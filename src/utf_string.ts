@@ -489,7 +489,9 @@ export class UtfString {
      * @returns The characters starting at the given start index up to the end index.
      */
     public substring(start?: number, end?: number): UtfString {
-        return new UtfString(this.getClass().substring(this.unsafeString, start, end));
+        const ctor = this.getClass();
+        const str = ctor.substring(this.unsafeString, start, end);
+        return new ctor(str);
     }
 
     /**
@@ -516,51 +518,58 @@ export class UtfString {
         return this.slice(str, start, end);
     }
 
-    /** Converts all the alphabetic characters in a string to uppercase. */
-    public upperCase() {
-        return new UtfString(this.unsafeString.toUpperCase());
-    }
-
-    /** Converts all the alphabetic characters in a string to lowercase. */
-    public lowerCase() {
-        return new UtfString(this.unsafeString.toLowerCase());
-    }
-
     /**
      * Split a string into substrings using the specified separator and return them as an array.
-     * @param separator — A string that identifies character or characters to use in separating the string. If omitted, a single-element array containing the entire string is returned.
-     * @param limit — A value used to limit the number of elements returned in the array.
+     * @param separator A string that identifies character or characters to use in separating the string.
+     *                  If omitted, a single-element array containing the entire string is returned.
+     * @param limit A value used to limit the number of elements returned in the array.
      */
     public split(seperator: string, limit?: number): UtfString[] {
         if (seperator === "") {
             return [...this].slice(0, limit);
         }
-        return this.unsafeString.split(seperator, limit).map((str) => new UtfString(str));
+        const ctor = this.getClass();
+        return this.unsafeString.split(seperator, limit).map((str) => new ctor(str));
     }
 
-    /** Removes the leading and trailing white space and line terminator characters from a string. */
+    /**
+     * Removes the leading and trailing white space and line terminator characters from a string.
+     */
     public trim() {
-        return new UtfString(this.unsafeString.trim());
+        const ctor = this.getClass();
+        return new ctor(this.unsafeString.trim());
     }
 
-    /** Removes whitespace from the left end of a string. */
+    /**
+     * Removes whitespace from the left end of a string.
+     */
     public trimLeft() {
-        return new UtfString(this.unsafeString.trimLeft());
+        const ctor = this.getClass();
+        return new ctor(this.unsafeString.trimLeft());
     }
 
-    /** Removes whitespace from the right end of a string. */
+    /**
+     * Removes whitespace from the right end of a string.
+     */
     public trimRight() {
-        return new UtfString(this.unsafeString.trimRight());
+        const ctor = this.getClass();
+        return new ctor(this.unsafeString.trimRight());
     }
 
-    /** Converts all the alphabetic characters in a string to lowercase. */
+    /**
+     * Converts all the alphabetic characters in a string to lower case.
+     */
     public toLowerCase() {
-        return new UtfString(this.unsafeString.toLowerCase());
+        const ctor = this.getClass();
+        return new ctor(this.unsafeString.toLowerCase());
     }
 
-    /** Converts all the alphabetic characters in a string to uppercase. */
+    /**
+     * Converts all the alphabetic characters in a string to upper case.
+     */
     public toUpperCase() {
-        return new UtfString(this.unsafeString.toUpperCase());
+        const ctor = this.getClass();
+        return new ctor(this.unsafeString.toUpperCase());
     }
 
     /**
