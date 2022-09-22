@@ -35,7 +35,7 @@ describe("UtfVisualString", () => {
             });
 
             it("returns an empty string if the negative start value is out-of-bounds", () => {
-                expect(utfString.substr(-3, 1).toString()).toEqual("");
+                expect(utfString.substr(-3, 1).toString()).toEqual("🇸🇴");
             });
         });
     });
