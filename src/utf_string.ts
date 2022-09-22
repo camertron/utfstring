@@ -903,8 +903,11 @@ export class UtfString {
      * @param seperator The seperator string inserted between the concatenated strings.
      * @returns A new string object that contains the concatenated strings from the given array.
      */
-    public static join(items: { toString(): string }[], seperator: UtfString | string = ","): UtfString {
-        const text = items.map((x) => x.toString()).join(seperator.toString());
+    public static join(
+        items: ({ toString(): string } | undefined | null)[],
+        seperator: UtfString | string = ",",
+    ): UtfString {
+        const text = items.map((x) => (isDefined(x) ? x.toString() : "")).join(seperator.toString());
         return new this(text);
     }
 }
