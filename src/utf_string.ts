@@ -558,7 +558,7 @@ export class UtfString {
     /**
      * Removes whitespace from the beginning of the string and returns a new string,
      * without modifying the original string.
-     * @return A new string object without any whitespaces at the beginning.
+     * @return A new string object without any whitespace at the beginning.
      */
     public trimStart(): UtfString {
         const ctor = this.getClass();
@@ -566,11 +566,21 @@ export class UtfString {
     }
 
     /**
-     * Removes whitespace from the right end of a string.
+     * Removes whitespace from the end of the string and returns a new string, without modifying the original string.
+     * @return A new string object without any whitespace at the end.
      */
-    public trimRight() {
+    public trimRight(): UtfString {
         const ctor = this.getClass();
         return new ctor(this.unsafeString.trimRight());
+    }
+
+    /**
+     * Removes whitespace from the end of the string and returns a new string, without modifying the original string.
+     * @return A new string object without any whitespace at the end.
+     */
+    public trimEnd(): UtfString {
+        const ctor = this.getClass();
+        return new ctor(this.unsafeString.trimEnd());
     }
 
     /**
