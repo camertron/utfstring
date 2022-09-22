@@ -898,22 +898,13 @@ export class UtfString {
     }
 
     /**
-     * Returns a string which concatenates the values from the given array.
-     * @param items An Array of items, which are joined.
-     * @param seperator
-     * @returns
+     * Concatenates the strings from the given array into a new string.
+     * @param items The array of strings which are joined.
+     * @param seperator The seperator string inserted between the concatenated strings.
+     * @returns A new string object that contains the concatenated strings from the given array.
      */
-    public static join(items: any[], seperator = ","): UtfString {
-        let text = "";
-        items.forEach((value) => {
-            if (value !== undefined && value !== null) {
-                text += value.toString() + seperator;
-            }
-        });
-        if (text.length > 0) {
-            text = text.substring(0, text.length - seperator.length);
-        }
-
-        return new UtfString(text);
+    public static join(items: { toString(): string }[], seperator: UtfString | string = ","): UtfString {
+        const text = items.map((x) => x.toString()).join(seperator.toString());
+        return new this(text);
     }
 }
