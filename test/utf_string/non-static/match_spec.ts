@@ -16,7 +16,9 @@ describe("UtfString", () => {
         it("works with standard ASCII characters", () => {
             const utfString = new UtfString("abca");
             const matchResult = utfString.match("a");
+
             expect(matchResult?.length).toBe(1);
+
             if (matchResult) {
                 expect(matchResult[0]).toEqual("a");
             }
@@ -25,7 +27,9 @@ describe("UtfString", () => {
         it("works with multi-byte characters", () => {
             const utfString = new UtfString("ありがとう");
             const matchResult = utfString.match("あ");
+
             expect(matchResult?.length).toBe(1);
+
             if (matchResult) {
                 expect(matchResult[0]).toEqual("あ");
             }
@@ -34,7 +38,9 @@ describe("UtfString", () => {
         it("works with astral plane unicode characters", () => {
             const utfString = new UtfString("𤔤𤔣𤔥𤔦");
             const matchResult = utfString.match("𤔣");
+
             expect(matchResult?.length).toBe(1);
+
             if (matchResult) {
                 expect(matchResult[0]).toEqual("𤔣");
             }
