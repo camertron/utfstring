@@ -9,4 +9,3 @@ describe("UtfVisualString", () => {
         });
     });
 });
-

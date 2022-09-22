@@ -6,7 +6,7 @@ describe("UtfString", () => {
         it("returns an object of type UtfString", () => {
             expect(UtfString.fromCodePoints([97])).toBeInstanceOf(UtfString);
         });
-        
+
         it("works with standard ASCII characters", () => {
             const arr = [97, 98, 99];
             expect(UtfString.fromCodePoints(arr).toString()).toEqual("abc");
@@ -28,4 +28,3 @@ describe("UtfString", () => {
         });
     });
 });
-

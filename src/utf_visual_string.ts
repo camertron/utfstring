@@ -45,4 +45,3 @@ export class UtfVisualString extends UtfString {
         return createUtfSafeCharScannerHandingRegionalIndicatorPairsAndSurrogatePairs();
     }
 }
-

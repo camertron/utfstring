@@ -106,8 +106,6 @@ describe("UtfString", () => {
                 expect(UtfString.substring(str, -2, 1)).toEqual("𤔣");
                 expect(UtfString.substring(str, -3, 1)).toEqual("𤔣");
             });
-
         });
     });
 });
-

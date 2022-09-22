@@ -7,7 +7,7 @@ describe("UtfString", () => {
             const utfString = new UtfString("abc");
             expect(utfString.slice(0, 1)).toBeInstanceOf(UtfString);
         });
-        
+
         describe("with standard ASCII characters", () => {
             const utfString = new UtfString("abc");
 
@@ -87,4 +87,3 @@ describe("UtfString", () => {
         });
     });
 });
-

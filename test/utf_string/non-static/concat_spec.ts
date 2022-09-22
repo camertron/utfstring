@@ -31,7 +31,7 @@ describe("UtfString", () => {
         it("works with multiple UtfString parameters", () => {
             const utfString = new UtfString("abc");
             expect(utfString.concat(new UtfString("d"), new UtfString("e"), new UtfString("f")).toString()).toEqual(
-                "abcdef"
+                "abcdef",
             );
         });
 
@@ -46,4 +46,3 @@ describe("UtfString", () => {
         });
     });
 });
-

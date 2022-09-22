@@ -27,11 +27,13 @@
         "@types/mocha": "9.1.1",
         "expect": "29.0.1",
         "mocha": "9.2.2",
+        "prettier": "2.7.1",
         "rimraf": "3.0.2",
         "ts-node": "10.9.1",
         "typescript": "4.7.4"
     },
     "scripts": {
+        "format": "npx prettier --check .",
         "clean": "rimraf dist",
         "build": "npx tsc",
         "clean-build": "npm run clean && npm run build",
