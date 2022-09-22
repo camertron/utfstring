@@ -537,9 +537,10 @@ export class UtfString {
     }
 
     /**
-     * Removes the leading and trailing white space and line terminator characters from a string.
+     * Removes whitespace from both ends of a string and returns a new string, without modifying the original string.
+     * @returns A new string object without any whitespaces at beginning or end.
      */
-    public trim() {
+    public trim(): UtfString {
         const ctor = this.getClass();
         return new ctor(this.unsafeString.trim());
     }
