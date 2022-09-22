@@ -561,17 +561,19 @@ export class UtfString {
     }
 
     /**
-     * Converts all the alphabetic characters in a string to lower case.
+     * Converts all the alphabetic characters in the string to lower case.
+     * @return A new string object in which all alphabetic characters are in lower case.
      */
-    public toLowerCase() {
+    public toLowerCase(): UtfString {
         const ctor = this.getClass();
         return new ctor(this.unsafeString.toLowerCase());
     }
 
     /**
-     * Converts all the alphabetic characters in a string to upper case.
+     * Converts all the alphabetic characters in the string to upper case.
+     * @return A new string object in which all alphabetic characters are in upper case.
      */
-    public toUpperCase() {
+    public toUpperCase(): UtfString {
         const ctor = this.getClass();
         return new ctor(this.unsafeString.toUpperCase());
     }

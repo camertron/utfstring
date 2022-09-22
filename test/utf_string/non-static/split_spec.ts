@@ -2,7 +2,7 @@ import { expect } from "expect";
 import { UtfString } from "../../../src/utf_string";
 
 describe("UtfString", () => {
-    describe("#split (non-static)", () => {
+    describe("#split", () => {
         it("returns a UtfString array with a length of 3", () => {
             const utfString = new UtfString("abc");
             const result = utfString.split("");
