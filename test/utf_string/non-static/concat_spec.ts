@@ -44,5 +44,10 @@ describe("UtfString", () => {
             const utfString = new UtfString("abc");
             expect(utfString.concat("d", new UtfString("e"), "f").toString()).toEqual("abcdef");
         });
+
+        it("works with non-string parameters", () => {
+            const utfString = new UtfString("abc");
+            expect(utfString.concat(1, null, 2, undefined).toString()).toEqual("abc1null2undefined");
+        });
     });
 });

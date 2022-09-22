@@ -54,9 +54,9 @@ export class UtfString {
      * @param arr The strings to concatenate.
      * @returns A new UTF-safe string object with the concatenated strings.
      */
-    public concat(...arr: Array<string | UtfString>): UtfString {
+    public concat(...arr: Array<unknown>): UtfString {
         const ctor = this.getClass();
-        return new ctor(this.unsafeString + arr.map((x) => x.toString()).join(""));
+        return new ctor(this.unsafeString + arr.map((x) => String(x)).join(""));
     }
 
     /**
