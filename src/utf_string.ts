@@ -50,6 +50,35 @@ export class UtfString {
     }
 
     /**
+     * Returns the character at the given index from the string.
+     * @param index The index of the wanted character.
+     * @returns The character at the given index.
+     */
+    public charAt(index: number): UtfString {
+        const ctor = this.getClass();
+        const char = ctor.charAt(this.unsafeString, index);
+        return new ctor(char);
+    }
+
+    /**
+     * Returns the Unicode codepoint at the given index.
+     * @param index The index of the wanted Unicode codepoint.
+     * @returns The Unicode codepoint at the given index.
+     */
+    public charCodeAt(index: number): number {
+        return this.getClass().charCodeAt(this.unsafeString, index);
+    }
+
+    /**
+     * Returns the Unicode codepoint at the given index.
+     * @param index The index of the wanted Unicode codepoint.
+     * @returns The Unicode codepoint at the given index.
+     */
+    public codePointAt(index: number): number {
+        return this.getClass().charCodeAt(this.unsafeString, index);
+    }
+
+    /**
      * Creates a new UTF-safe string object by concatenating the given strings.
      * @param arr The strings to concatenate.
      * @returns A new UTF-safe string object with the concatenated strings.
@@ -79,12 +108,78 @@ export class UtfString {
     }
 
     /**
+     * Finds the byte index for the given character index in the string.
+     * Note: a "byte index" is really a "JavaScript string index", not a true byte offset.
+     * Use this function to convert a UTF character boundary to a JavaScript string index.
+     * @param charIndex The character index for which to find the byte index.
+     * @returns The byte index for the character index in the string.
+     *          -1 if the character index is equal to or higher than the length of the string.
+     */
+    public findByteIndex(charIndex: number): number {
+        return this.getClass().findByteIndex(this.unsafeString, charIndex);
+    }
+
+    /**
+     * Finds the character index for the given byte index in the string.
+     * Note: a "byte index" is really a "JavaSciprt string index", not a true byte offset.
+     * Use this function to convert a JavaScript string index to (the closest) UTF character boundary.
+     * @param byteIndex The byte index for which to find the character index.
+     * @returns The character index for the byte index in the string.
+     *          -1 if the byte index is equal to or higher than the number of bytes in the string.
+     */
+    public findCharIndex(byteIndex: number): number {
+        return this.getClass().findCharIndex(this.unsafeString, byteIndex);
+    }
+
+    /**
      * Checks if the search value is within the string.
      * @param searchValue The value to search.
      * @returns True if the search value was found in the string, false otherwise.
      */
     public includes(searchValue: string | UtfString): boolean {
         return this.indexOf(searchValue) !== -1;
+    }
+
+    /**
+     * Finds the first instance of the search value within the string. Starts at an optional offset.
+     * @param searchValue The value to search.
+     * @param start Optional start offset for the search.
+     * @returns The first instance of the search value within the string.
+     *          -1 if the search value could not be found.
+     */
+    public indexOf(searchValue: string | UtfString, start = 0): number {
+        return this.getClass().indexOf(this.unsafeString, searchValue.toString(), start);
+    }
+
+    /**
+     * Finds the last instance of the search value within the string.
+     * Starts searching backwards at an optional offset, which can be negative.
+     * @param searchValue The value to search.
+     * @param start Optional start offset for the search.
+     * @returns The last instance of the search value within the string.
+     *          -1 if the search value could not be found.
+     */
+    public lastIndexOf(searchValue: string | UtfString, start?: number): number {
+        return this.getClass().lastIndexOf(this.unsafeString, searchValue.toString(), start);
+    }
+
+    /**
+     * Returns the number of logical characters in the string.
+     * @returns The number of logical characters in the string.
+     */
+    public get length(): number {
+        return this.getClass().lengthOf(this.unsafeString);
+    }
+
+    /**
+     * Matches a string or an object that supports being matched against, and returns an array
+     * containing the results of that search, or null if no matches are found.
+     * @param matcher An object that supports being matched against.
+     */
+    // TODO: parameter "matcher" can be an object with a Match-method
+    //       https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match#parameters
+    public match(matcher: string | UtfString | RegExp): RegExpMatchArray | null {
+        return this.toString().match(matcher instanceof UtfString ? matcher.toString() : matcher);
     }
 
     /**
@@ -113,6 +208,16 @@ export class UtfString {
     }
 
     /**
+     * Returns a new string which contains the specified number of copies of the string on which it was called.
+     * @param count The number of times the string should be repeated.
+     * @returns The new string which contains a specified number of copies of the original string.
+     */
+    public repeat(count: number): UtfString {
+        const ctor = this.getClass();
+        return new ctor(this.unsafeString.repeat(count));
+    }
+
+    /**
      * Creates a new UTF-safe string object with one, some, or all matches of a pattern replaced by a replacement.
      * The pattern can be a string or a RegExp, and the replacement can be a string or a function called for each match.
      * If pattern is a string, only the first occurrence will be replaced.
@@ -137,13 +242,31 @@ export class UtfString {
     }
 
     /**
-     * Returns a new string which contains the specified number of copies of the string on which it was called.
-     * @param count The number of times the string should be repeated.
-     * @returns The new string which contains a specified number of copies of the original string.
+     * Returns the characters between the two given indices in the string.
+     * @param start The index from which to start extracting the characters.
+     * @param finish The index at which to end extracting the characters.
+     * @returns The characters between the two given indices.
      */
-    public repeat(count: number): UtfString {
+    public slice(start?: number, finish?: number): UtfString {
         const ctor = this.getClass();
-        return new ctor(this.unsafeString.repeat(count));
+        const str = ctor.slice(this.unsafeString, start, finish);
+        return new ctor(str);
+    }
+
+    /**
+     * Split a string into substrings using the specified separator and return them as an array.
+     * @param separator The pattern describing where each split should occur.
+     *                  If omitted, a single-element array containing the entire string is returned.
+     * @param limit A value used to limit the number of elements returned in the array.
+     */
+    // TODO: parameter "separator" can be a RegExp or an object with a Splitter-Method
+    //       https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split#parameters
+    public split(seperator: string, limit?: number): UtfString[] {
+        if (seperator === "") {
+            return [...this].slice(0, limit);
+        }
+        const ctor = this.getClass();
+        return this.unsafeString.split(seperator, limit).map((str) => new ctor(str));
     }
 
     /**
@@ -157,6 +280,64 @@ export class UtfString {
     }
 
     /**
+     * Returns the characters starting at the given start index up to the start index plus the given length.
+     * @param start The index from which to start extracting the characters.
+     * @param length The number of characters to extract.
+     * @returns The characters starting at the given start index up to the start index plus the given length.
+     */
+    public substr(start?: number, length?: number): UtfString {
+        const ctor = this.getClass();
+        const str = ctor.substr(this.unsafeString, start, length);
+        return new ctor(str);
+    }
+
+    /**
+     * Returns the characters starting at the given start index up to the end index.
+     * @param start The index from which to start extracting the characters.
+     * @param end The index to which characters are extracted.
+     * @returns The characters starting at the given start index up to the end index.
+     */
+    public substring(start?: number, end?: number): UtfString {
+        const ctor = this.getClass();
+        const str = ctor.substring(this.unsafeString, start, end);
+        return new ctor(str);
+    }
+
+    /**
+     * Converts the string into an array of UTF-16 bytes.
+     * @returns The UTF-16 bytes created from the string.
+     */
+    public toBytes(): number[] {
+        return this.getClass().stringToBytes(this.unsafeString);
+    }
+
+    /**
+     * Converts the string into an array of individual logical characters.
+     * Note that each entry in the returned array may be more than one UTF-16 character.
+     * @returns The array containing the individual logical characters taken from the string.
+     */
+    public toCharArray(): string[] {
+        return this.getClass().stringToCharArray(this.unsafeString);
+    }
+
+    /**
+     * Converts the string into an array of codepoints.
+     * @returns The codepoints taken from the string.
+     */
+    public toCodePoints(): number[] {
+        return this.getClass().stringToCodePoints(this.unsafeString);
+    }
+
+    /**
+     * Converts all the alphabetic characters in the string to lower case.
+     * @return A new string object in which all alphabetic characters are in lower case.
+     */
+    public toLowerCase(): UtfString {
+        const ctor = this.getClass();
+        return new ctor(this.unsafeString.toLowerCase());
+    }
+
+    /**
      * Returns the unsafe string the object is hiding.
      * @returns The unsafe string.
      */
@@ -165,14 +346,86 @@ export class UtfString {
     }
 
     /**
-     * Returns the character at the given index from the string.
-     * @param index The index of the wanted character.
-     * @returns The character at the given index.
+     * Converts all the alphabetic characters in the string to upper case.
+     * @return A new string object in which all alphabetic characters are in upper case.
      */
-    public charAt(index: number): UtfString {
+    public toUpperCase(): UtfString {
         const ctor = this.getClass();
-        const char = ctor.charAt(this.unsafeString, index);
-        return new ctor(char);
+        return new ctor(this.unsafeString.toUpperCase());
+    }
+
+    /**
+     * Removes whitespace from both ends of the string and returns a new string, without modifying the original string.
+     * @returns A new string object without any whitespace at the beginning or the end.
+     */
+    public trim(): UtfString {
+        const ctor = this.getClass();
+        return new ctor(this.unsafeString.trim());
+    }
+
+    /**
+     * Removes whitespace from the end of the string and returns a new string, without modifying the original string.
+     * @return A new string object without any whitespace at the end.
+     */
+    public trimEnd(): UtfString {
+        const ctor = this.getClass();
+        return new ctor(this.unsafeString.trimEnd());
+    }
+
+    /**
+     * Removes whitespace from the beginning of the string and returns a new string,
+     * without modifying the original string.
+     * @return A new string object without any whitespace at the beginning.
+     */
+    public trimLeft(): UtfString {
+        const ctor = this.getClass();
+        return new ctor(this.unsafeString.trimLeft());
+    }
+
+    /**
+     * Removes whitespace from the end of the string and returns a new string, without modifying the original string.
+     * @return A new string object without any whitespace at the end.
+     */
+    public trimRight(): UtfString {
+        const ctor = this.getClass();
+        return new ctor(this.unsafeString.trimRight());
+    }
+
+    /**
+     * Removes whitespace from the beginning of the string and returns a new string,
+     * without modifying the original string.
+     * @return A new string object without any whitespace at the beginning.
+     */
+    public trimStart(): UtfString {
+        const ctor = this.getClass();
+        return new ctor(this.unsafeString.trimStart());
+    }
+
+    /**
+     * Returns the constructor function of this object.
+     * @returns The constructor function of this object.
+     */
+    private getClass(): typeof UtfString {
+        // gets the constructor function at runtime and therefore also works in derived classes
+        return Object.getPrototypeOf(this).constructor;
+    }
+
+    /**
+     * Converts an array of UTF-16 bytes into a string.
+     * @param arr The array of UTF-16 bytes that should be converted.
+     * @returns The string created from the array of UTF-16 bytes.
+     */
+    public static bytesToString(arr: number[]): string {
+        const result = new Array<string>();
+
+        for (let i = 0; i < arr.length; i += 2) {
+            const hi = arr[i];
+            const low = arr[i + 1];
+            const combined = (hi << 8) | low;
+            result.push(String.fromCharCode(combined));
+        }
+
+        return result.join("");
     }
 
     /**
@@ -193,24 +446,6 @@ export class UtfString {
         const match = scanner.exec(characters);
 
         return match === null ? characters[0] : match[0];
-    }
-
-    /**
-     * Returns the Unicode codepoint at the given index.
-     * @param index The index of the wanted Unicode codepoint.
-     * @returns The Unicode codepoint at the given index.
-     */
-    public charCodeAt(index: number): number {
-        return this.getClass().charCodeAt(this.unsafeString, index);
-    }
-
-    /**
-     * Returns the Unicode codepoint at the given index.
-     * @param index The index of the wanted Unicode codepoint.
-     * @returns The Unicode codepoint at the given index.
-     */
-    public codePointAt(index: number): number {
-        return this.getClass().charCodeAt(this.unsafeString, index);
     }
 
     /**
@@ -238,6 +473,75 @@ export class UtfString {
     }
 
     /**
+     * Converts an array of codepoints into a string.
+     * @param arr The codepoints that should be converted.
+     * @returns The string created from the codepoints.
+     */
+    public static codePointsToString(arr: number[]): string {
+        const chars = arr.map((a) => this.stringFromCharCode(a));
+        return chars.join("");
+    }
+
+    /**
+     * Finds the byte index for the given character index in the given string.
+     * Note: a "byte index" is really a "JavaScript string index", not a true byte offset.
+     * Use this function to convert a UTF character boundary to a JavaScript string index.
+     * @param str The string in which to search the byte index.
+     * @param charIndex The character index for which to find the byte index.
+     * @returns The byte index for the character index in the string.
+     *          -1 if the character index is equal to or higher than the length of the string.
+     */
+    public static findByteIndex(str: string, charIndex: number): number {
+        if (charIndex >= this.lengthOf(str)) {
+            return -1;
+        }
+
+        return this.scan(str, this.createUtfSafeCharScanner(), charIndex);
+    }
+
+    /**
+     * Finds the character index for the given byte index in the given string.
+     * Note: a "byte index" is really a "JavaSciprt string index", not a true byte offset.
+     * Use this function to convert a JavaScript string index to (the closest) UTF character boundary.
+     * @param str The string in which to search the character index.
+     * @param byteIndex The byte index for which to find the character index.
+     * @returns The character index for the byte index in the string.
+     *          -1 if the byte index is equal to or higher than the number of bytes in the string.
+     */
+    public static findCharIndex(str: string, byteIndex: number): number {
+        if (byteIndex >= str.length) {
+            return -1;
+        }
+
+        // optimization: don't iterate unless necessary
+        if (!this.containsUnsafeUtfChars(str)) {
+            return byteIndex;
+        }
+
+        const scanner = this.createUtfSafeCharScanner();
+        let charCount = 0;
+
+        while (scanner.exec(str) !== null) {
+            if (scanner.lastIndex > byteIndex) {
+                break;
+            }
+
+            charCount++;
+        }
+
+        return charCount;
+    }
+
+    /**
+     * Converts an array of UTF-16 bytes into a UTF-safe string object.
+     * @param arr The array of UTF-16 bytes that should be converted.
+     * @returns The UTF-safe string object created from the array of UTF-16 bytes.
+     */
+    public static fromBytes(arr: number[]): UtfString {
+        return new this(this.bytesToString(arr));
+    }
+
+    /**
      * Returns a UTF-safe string object for the given Unicode codepoint.
      * @param charCode The Unicode codepoint.
      * @returns The UTF-safe string object for the given Unicode codepoint.
@@ -247,28 +551,12 @@ export class UtfString {
     }
 
     /**
-     * Returns the string for the given Unicode codepoint.
-     * @param charCode The Unicode codepoint.
-     * @returns The string for the given Unicode codepoint.
+     * Converts an array of codepoints into a UTF-safe string object.
+     * @param arr The codepoints that should be converted.
+     * @returns The UTF-safe string object created from the codepoints.
      */
-    public static stringFromCharCode(charCode: number): string {
-        if (charCode > 0xffff) {
-            charCode -= 0x10000;
-            return String.fromCharCode(0xd800 + (charCode >> 10), 0xdc00 + (charCode & 0x3ff));
-        } else {
-            return String.fromCharCode(charCode);
-        }
-    }
-
-    /**
-     * Finds the first instance of the search value within the string. Starts at an optional offset.
-     * @param searchValue The value to search.
-     * @param start Optional start offset for the search.
-     * @returns The first instance of the search value within the string.
-     *          -1 if the search value could not be found.
-     */
-    public indexOf(searchValue: string | UtfString, start = 0): number {
-        return this.getClass().indexOf(this.unsafeString, searchValue.toString(), start);
+    public static fromCodePoints(arr: number[]): UtfString {
+        return new this(this.codePointsToString(arr));
     }
 
     /**
@@ -287,15 +575,17 @@ export class UtfString {
     }
 
     /**
-     * Finds the last instance of the search value within the string.
-     * Starts searching backwards at an optional offset, which can be negative.
-     * @param searchValue The value to search.
-     * @param start Optional start offset for the search.
-     * @returns The last instance of the search value within the string.
-     *          -1 if the search value could not be found.
+     * Concatenates the strings from the given array into a new string.
+     * @param items The array of strings which are joined.
+     * @param seperator The seperator string inserted between the concatenated strings.
+     * @returns A new string object that contains the concatenated strings from the given array.
      */
-    public lastIndexOf(searchValue: string | UtfString, start?: number): number {
-        return this.getClass().lastIndexOf(this.unsafeString, searchValue.toString(), start);
+    public static join(
+        items: ({ toString(): string } | undefined | null)[],
+        seperator: UtfString | string = ",",
+    ): UtfString {
+        const text = items.map((x) => (isDefined(x) ? x.toString() : "")).join(seperator.toString());
+        return new this(text);
     }
 
     /**
@@ -321,14 +611,13 @@ export class UtfString {
     }
 
     /**
-     * Matches a string or an object that supports being matched against, and returns an array
-     * containing the results of that search, or null if no matches are found.
-     * @param matcher An object that supports being matched against.
+     * Returns the number of logical characters in the given string.
+     * @param str The string whose length is calculated.
+     * @returns The number of logical characters in the given string.
      */
-    // TODO: parameter "matcher" can be an object with a Match-method
-    //       https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match#parameters
-    public match(matcher: string | UtfString | RegExp): RegExpMatchArray | null {
-        return this.toString().match(matcher instanceof UtfString ? matcher.toString() : matcher);
+    public static lengthOf(str: string): number {
+        // findCharIndex will return -1 if string is empty, so add 1
+        return this.findCharIndex(str, str.length - 1) + 1;
     }
 
     /**
@@ -396,18 +685,6 @@ export class UtfString {
     }
 
     /**
-     * Returns the characters between the two given indices in the string.
-     * @param start The index from which to start extracting the characters.
-     * @param finish The index at which to end extracting the characters.
-     * @returns The characters between the two given indices.
-     */
-    public slice(start?: number, finish?: number): UtfString {
-        const ctor = this.getClass();
-        const str = ctor.slice(this.unsafeString, start, finish);
-        return new ctor(str);
-    }
-
-    /**
      * Returns the characters between the two given indices in the given string.
      * @param str The string from which to extract the characters.
      * @param start The index from which to start extracting the characters.
@@ -441,15 +718,91 @@ export class UtfString {
     }
 
     /**
-     * Returns the characters starting at the given start index up to the start index plus the given length.
-     * @param start The index from which to start extracting the characters.
-     * @param length The number of characters to extract.
-     * @returns The characters starting at the given start index up to the start index plus the given length.
+     * Returns the string for the given Unicode codepoint.
+     * @param charCode The Unicode codepoint.
+     * @returns The string for the given Unicode codepoint.
      */
-    public substr(start?: number, length?: number): UtfString {
-        const ctor = this.getClass();
-        const str = ctor.substr(this.unsafeString, start, length);
-        return new ctor(str);
+    public static stringFromCharCode(charCode: number): string {
+        if (charCode > 0xffff) {
+            charCode -= 0x10000;
+            return String.fromCharCode(0xd800 + (charCode >> 10), 0xdc00 + (charCode & 0x3ff));
+        } else {
+            return String.fromCharCode(charCode);
+        }
+    }
+
+    /**
+     * Converts a string into an array of UTF-16 bytes.
+     * @param str The string that should be converted.
+     * @returns The UTF-16 bytes created from the string.
+     */
+    public static stringToBytes(str: string): number[] {
+        let result = new Array<number>();
+
+        for (let i = 0; i < str.length; i++) {
+            let chr = str.charCodeAt(i);
+            const byteArray = new Array<number>();
+
+            while (chr > 0) {
+                byteArray.push(chr & 0xff);
+                chr >>= 8;
+            }
+
+            // all utf-16 characters are two bytes
+            if (byteArray.length === 1) {
+                byteArray.push(0);
+            }
+
+            // assume big-endian
+            result = result.concat(byteArray.reverse());
+        }
+
+        return result;
+    }
+
+    /**
+     * Converts the given string into an array of individual logical characters.
+     * Note that each entry in the returned array may be more than one UTF-16 character.
+     * @param str The string that should be converted.
+     * @returns The array containing the individual logical characters taken from the string.
+     */
+    public static stringToCharArray(str: string): string[] {
+        const result = new Array<string>();
+        const scanner = this.createUtfSafeCharScanner();
+
+        let match: RegExpExecArray | null;
+        do {
+            match = scanner.exec(str);
+
+            if (match === null) {
+                break;
+            }
+
+            result.push(match[0]);
+        } while (match !== null);
+
+        return result;
+    }
+
+    /**
+     * Converts a string into an array of codepoints.
+     * @param str The string that should be converted.
+     * @returns The codepoints taken from the string.
+     */
+    public static stringToCodePoints(str: string): number[] {
+        const result = new Array<number>();
+
+        for (let i = 0; i < str.length; i++) {
+            const codePoint = this.charCodeAt(str, i);
+
+            if (!codePoint) {
+                break;
+            }
+
+            result.push(codePoint);
+        }
+
+        return result;
     }
 
     /**
@@ -486,18 +839,6 @@ export class UtfString {
 
     /**
      * Returns the characters starting at the given start index up to the end index.
-     * @param start The index from which to start extracting the characters.
-     * @param end The index to which characters are extracted.
-     * @returns The characters starting at the given start index up to the end index.
-     */
-    public substring(start?: number, end?: number): UtfString {
-        const ctor = this.getClass();
-        const str = ctor.substring(this.unsafeString, start, end);
-        return new ctor(str);
-    }
-
-    /**
-     * Returns the characters starting at the given start index up to the end index.
      * @param str The string from which to extract the characters.
      * @param start The index from which to start extracting the characters.
      * @param end The index to which characters are extracted.
@@ -518,324 +859,6 @@ export class UtfString {
             [start, end] = [end, start];
         }
         return this.slice(str, start, end);
-    }
-
-    /**
-     * Split a string into substrings using the specified separator and return them as an array.
-     * @param separator The pattern describing where each split should occur.
-     *                  If omitted, a single-element array containing the entire string is returned.
-     * @param limit A value used to limit the number of elements returned in the array.
-     */
-    // TODO: parameter "separator" can be a RegExp or an object with a Splitter-Method
-    //       https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split#parameters
-    public split(seperator: string, limit?: number): UtfString[] {
-        if (seperator === "") {
-            return [...this].slice(0, limit);
-        }
-        const ctor = this.getClass();
-        return this.unsafeString.split(seperator, limit).map((str) => new ctor(str));
-    }
-
-    /**
-     * Removes whitespace from both ends of the string and returns a new string, without modifying the original string.
-     * @returns A new string object without any whitespace at the beginning or the end.
-     */
-    public trim(): UtfString {
-        const ctor = this.getClass();
-        return new ctor(this.unsafeString.trim());
-    }
-
-    /**
-     * Removes whitespace from the beginning of the string and returns a new string,
-     * without modifying the original string.
-     * @return A new string object without any whitespace at the beginning.
-     */
-    public trimLeft(): UtfString {
-        const ctor = this.getClass();
-        return new ctor(this.unsafeString.trimLeft());
-    }
-
-    /**
-     * Removes whitespace from the beginning of the string and returns a new string,
-     * without modifying the original string.
-     * @return A new string object without any whitespace at the beginning.
-     */
-    public trimStart(): UtfString {
-        const ctor = this.getClass();
-        return new ctor(this.unsafeString.trimStart());
-    }
-
-    /**
-     * Removes whitespace from the end of the string and returns a new string, without modifying the original string.
-     * @return A new string object without any whitespace at the end.
-     */
-    public trimRight(): UtfString {
-        const ctor = this.getClass();
-        return new ctor(this.unsafeString.trimRight());
-    }
-
-    /**
-     * Removes whitespace from the end of the string and returns a new string, without modifying the original string.
-     * @return A new string object without any whitespace at the end.
-     */
-    public trimEnd(): UtfString {
-        const ctor = this.getClass();
-        return new ctor(this.unsafeString.trimEnd());
-    }
-
-    /**
-     * Converts all the alphabetic characters in the string to lower case.
-     * @return A new string object in which all alphabetic characters are in lower case.
-     */
-    public toLowerCase(): UtfString {
-        const ctor = this.getClass();
-        return new ctor(this.unsafeString.toLowerCase());
-    }
-
-    /**
-     * Converts all the alphabetic characters in the string to upper case.
-     * @return A new string object in which all alphabetic characters are in upper case.
-     */
-    public toUpperCase(): UtfString {
-        const ctor = this.getClass();
-        return new ctor(this.unsafeString.toUpperCase());
-    }
-
-    /**
-     * Returns the number of logical characters in the string.
-     * @returns The number of logical characters in the string.
-     */
-    public get length(): number {
-        return this.getClass().lengthOf(this.unsafeString);
-    }
-
-    /**
-     * Returns the number of logical characters in the given string.
-     * @param str The string whose length is calculated.
-     * @returns The number of logical characters in the given string.
-     */
-    public static lengthOf(str: string): number {
-        // findCharIndex will return -1 if string is empty, so add 1
-        return this.findCharIndex(str, str.length - 1) + 1;
-    }
-
-    /**
-     * Converts the string into an array of codepoints.
-     * @returns The codepoints taken from the string.
-     */
-    public toCodePoints(): number[] {
-        return this.getClass().stringToCodePoints(this.unsafeString);
-    }
-
-    /**
-     * Converts a string into an array of codepoints.
-     * @param str The string that should be converted.
-     * @returns The codepoints taken from the string.
-     */
-    public static stringToCodePoints(str: string): number[] {
-        const result = new Array<number>();
-
-        for (let i = 0; i < str.length; i++) {
-            const codePoint = this.charCodeAt(str, i);
-
-            if (!codePoint) {
-                break;
-            }
-
-            result.push(codePoint);
-        }
-
-        return result;
-    }
-
-    /**
-     * Converts an array of codepoints into a UTF-safe string object.
-     * @param arr The codepoints that should be converted.
-     * @returns The UTF-safe string object created from the codepoints.
-     */
-    public static fromCodePoints(arr: number[]): UtfString {
-        return new this(this.codePointsToString(arr));
-    }
-
-    /**
-     * Converts an array of codepoints into a string.
-     * @param arr The codepoints that should be converted.
-     * @returns The string created from the codepoints.
-     */
-    public static codePointsToString(arr: number[]): string {
-        const chars = arr.map((a) => this.stringFromCharCode(a));
-        return chars.join("");
-    }
-
-    /**
-     * Converts the string into an array of UTF-16 bytes.
-     * @returns The UTF-16 bytes created from the string.
-     */
-    public toBytes(): number[] {
-        return this.getClass().stringToBytes(this.unsafeString);
-    }
-
-    /**
-     * Converts a string into an array of UTF-16 bytes.
-     * @param str The string that should be converted.
-     * @returns The UTF-16 bytes created from the string.
-     */
-    public static stringToBytes(str: string): number[] {
-        let result = new Array<number>();
-
-        for (let i = 0; i < str.length; i++) {
-            let chr = str.charCodeAt(i);
-            const byteArray = new Array<number>();
-
-            while (chr > 0) {
-                byteArray.push(chr & 0xff);
-                chr >>= 8;
-            }
-
-            // all utf-16 characters are two bytes
-            if (byteArray.length === 1) {
-                byteArray.push(0);
-            }
-
-            // assume big-endian
-            result = result.concat(byteArray.reverse());
-        }
-
-        return result;
-    }
-
-    /**
-     * Converts an array of UTF-16 bytes into a UTF-safe string object.
-     * @param arr The array of UTF-16 bytes that should be converted.
-     * @returns The UTF-safe string object created from the array of UTF-16 bytes.
-     */
-    public static fromBytes(arr: number[]): UtfString {
-        return new this(this.bytesToString(arr));
-    }
-
-    /**
-     * Converts an array of UTF-16 bytes into a string.
-     * @param arr The array of UTF-16 bytes that should be converted.
-     * @returns The string created from the array of UTF-16 bytes.
-     */
-    public static bytesToString(arr: number[]): string {
-        const result = new Array<string>();
-
-        for (let i = 0; i < arr.length; i += 2) {
-            const hi = arr[i];
-            const low = arr[i + 1];
-            const combined = (hi << 8) | low;
-            result.push(String.fromCharCode(combined));
-        }
-
-        return result.join("");
-    }
-
-    /**
-     * Converts the string into an array of individual logical characters.
-     * Note that each entry in the returned array may be more than one UTF-16 character.
-     * @returns The array containing the individual logical characters taken from the string.
-     */
-    public toCharArray(): string[] {
-        return this.getClass().stringToCharArray(this.unsafeString);
-    }
-
-    /**
-     * Converts the given string into an array of individual logical characters.
-     * Note that each entry in the returned array may be more than one UTF-16 character.
-     * @param str The string that should be converted.
-     * @returns The array containing the individual logical characters taken from the string.
-     */
-    public static stringToCharArray(str: string): string[] {
-        const result = new Array<string>();
-        const scanner = this.createUtfSafeCharScanner();
-
-        let match: RegExpExecArray | null;
-        do {
-            match = scanner.exec(str);
-
-            if (match === null) {
-                break;
-            }
-
-            result.push(match[0]);
-        } while (match !== null);
-
-        return result;
-    }
-
-    /**
-     * Finds the byte index for the given character index in the string.
-     * Note: a "byte index" is really a "JavaScript string index", not a true byte offset.
-     * Use this function to convert a UTF character boundary to a JavaScript string index.
-     * @param charIndex The character index for which to find the byte index.
-     * @returns The byte index for the character index in the string.
-     *          -1 if the character index is equal to or higher than the length of the string.
-     */
-    public findByteIndex(charIndex: number): number {
-        return this.getClass().findByteIndex(this.unsafeString, charIndex);
-    }
-
-    /**
-     * Finds the byte index for the given character index in the given string.
-     * Note: a "byte index" is really a "JavaScript string index", not a true byte offset.
-     * Use this function to convert a UTF character boundary to a JavaScript string index.
-     * @param str The string in which to search the byte index.
-     * @param charIndex The character index for which to find the byte index.
-     * @returns The byte index for the character index in the string.
-     *          -1 if the character index is equal to or higher than the length of the string.
-     */
-    public static findByteIndex(str: string, charIndex: number): number {
-        if (charIndex >= this.lengthOf(str)) {
-            return -1;
-        }
-
-        return this.scan(str, this.createUtfSafeCharScanner(), charIndex);
-    }
-
-    /**
-     * Finds the character index for the given byte index in the string.
-     * Note: a "byte index" is really a "JavaSciprt string index", not a true byte offset.
-     * Use this function to convert a JavaScript string index to (the closest) UTF character boundary.
-     * @param byteIndex The byte index for which to find the character index.
-     * @returns The character index for the byte index in the string.
-     *          -1 if the byte index is equal to or higher than the number of bytes in the string.
-     */
-    public findCharIndex(byteIndex: number): number {
-        return this.getClass().findCharIndex(this.unsafeString, byteIndex);
-    }
-
-    /**
-     * Finds the character index for the given byte index in the given string.
-     * Note: a "byte index" is really a "JavaSciprt string index", not a true byte offset.
-     * Use this function to convert a JavaScript string index to (the closest) UTF character boundary.
-     * @param str The string in which to search the character index.
-     * @param byteIndex The byte index for which to find the character index.
-     * @returns The character index for the byte index in the string.
-     *          -1 if the byte index is equal to or higher than the number of bytes in the string.
-     */
-    public static findCharIndex(str: string, byteIndex: number): number {
-        if (byteIndex >= str.length) {
-            return -1;
-        }
-
-        // optimization: don't iterate unless necessary
-        if (!this.containsUnsafeUtfChars(str)) {
-            return byteIndex;
-        }
-
-        const scanner = this.createUtfSafeCharScanner();
-        let charCount = 0;
-
-        while (scanner.exec(str) !== null) {
-            if (scanner.lastIndex > byteIndex) {
-                break;
-            }
-
-            charCount++;
-        }
-
-        return charCount;
     }
 
     /**
@@ -901,6 +924,16 @@ export class UtfString {
     }
 
     /**
+     * Checks if the given string contains surrogate pairs.
+     * @param str The string that is checked.
+     * @returns True if the given string contains surrogate pairs, false otherwise.
+     */
+    private static containsUnsafeUtfChars(str: string): boolean {
+        const scanner = this.createUnsafeUtfCharFinder();
+        return scanner.test(str);
+    }
+
+    /**
      * Creates a char scanner that matches unsafe UTF chars.
      * @returns A char scanner that matches unsafe UTF chars.
      */
@@ -914,38 +947,5 @@ export class UtfString {
      */
     protected static createUtfSafeCharScanner(): RegExp {
         return createUtfSafeCharScannerHandlingSurrogatePairs();
-    }
-
-    /**
-     * Checks if the given string contains surrogate pairs.
-     * @param str The string that is checked.
-     * @returns True if the given string contains surrogate pairs, false otherwise.
-     */
-    private static containsUnsafeUtfChars(str: string): boolean {
-        const scanner = this.createUnsafeUtfCharFinder();
-        return scanner.test(str);
-    }
-
-    /**
-     * Returns the constructor function of this object.
-     * @returns The constructor function of this object.
-     */
-    private getClass(): typeof UtfString {
-        // gets the constructor function at runtime and therefore also works in derived classes
-        return Object.getPrototypeOf(this).constructor;
-    }
-
-    /**
-     * Concatenates the strings from the given array into a new string.
-     * @param items The array of strings which are joined.
-     * @param seperator The seperator string inserted between the concatenated strings.
-     * @returns A new string object that contains the concatenated strings from the given array.
-     */
-    public static join(
-        items: ({ toString(): string } | undefined | null)[],
-        seperator: UtfString | string = ",",
-    ): UtfString {
-        const text = items.map((x) => (isDefined(x) ? x.toString() : "")).join(seperator.toString());
-        return new this(text);
     }
 }
