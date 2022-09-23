@@ -5,7 +5,7 @@
 * UtfString.length is now called UtfString.lengthOf.
 * UtfString.fromCharCode is now called UtfString.stringFromCharCode.
 
-# Changes
+## Changes
 * UtfString is now a class that can be instantiated and has its own set of string methods.
 * UtfVisualString is now a class that can be instantiated and has its own set of string methods.
 
