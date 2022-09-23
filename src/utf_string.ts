@@ -853,6 +853,8 @@ export class UtfString {
             end = this.lengthOf(str);
         } else if (isNaN(end)) {
             end = 0;
+        } else if (end < 0) {
+            end = 0;
         }
 
         if (start > end) {

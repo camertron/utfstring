@@ -13,13 +13,37 @@ describe("UtfString", () => {
                 expect(UtfString.substring(str, 1, 3)).toEqual("bc");
             });
 
-            it("returns the rest of string if end index not given", () => {
+            it("treats a negative start index as 0", () => {
+                expect(UtfString.substring(str, -1, 1)).toEqual("a");
+                expect(UtfString.substring(str, -2, 1)).toEqual("a");
+                expect(UtfString.substring(str, -3, 1)).toEqual("a");
+            });
+
+            it("accepts an undefined start index", () => {
+                expect(UtfString.substring(str, undefined, 3)).toEqual("abc");
+            });
+
+            it("treats a NaN start index as 0", () => {
+                expect(UtfString.substring(str, NaN, 3)).toEqual("abc");
+            });
+
+            it("returns the rest of string if the end index is not specified", () => {
                 expect(UtfString.substring(str, 0)).toEqual("abc");
                 expect(UtfString.substring(str, 1)).toEqual("bc");
                 expect(UtfString.substring(str, 2)).toEqual("c");
             });
 
-            it("returns up to the length of the string if given an out-of-bounds endIndex", () => {
+            it("treats a NaN end index as 0", () => {
+                expect(UtfString.substring(str, 0, NaN)).toEqual("");
+            });
+
+            it("treats a negative end index as 0", () => {
+                expect(UtfString.substring(str, 0, -1)).toEqual("");
+                expect(UtfString.substring(str, 1, -1)).toEqual("a");
+                expect(UtfString.substring(str, 2, -1)).toEqual("ab");
+            });
+
+            it("returns up to the length of the string if given an out-of-bounds end index", () => {
                 expect(UtfString.substring(str, 2, 10)).toEqual("c");
             });
 
@@ -28,22 +52,8 @@ describe("UtfString", () => {
                 expect(UtfString.substring(str, 6, 0)).toEqual("abc");
             });
 
-            it("accepts a negative start value", () => {
-                expect(UtfString.substring(str, -1, 1)).toEqual("a");
-                expect(UtfString.substring(str, -2, 1)).toEqual("a");
-                expect(UtfString.substring(str, -3, 1)).toEqual("a");
-            });
-
-            it("accepts an undefined start value", () => {
-                expect(UtfString.substring(str, undefined, 3)).toEqual("abc");
-            });
-
-            it("accepts NaN as start value", () => {
-                expect(UtfString.substring(str, NaN, 3)).toEqual("abc");
-            });
-
-            it("accepts NaN as end value", () => {
-                expect(UtfString.substring(str, 0, NaN)).toEqual("");
+            it("returns the original string if start and end index are not defined", () => {
+                expect(UtfString.substring(str)).toEqual("abc");
             });
         });
 
@@ -69,7 +79,7 @@ describe("UtfString", () => {
                 expect(UtfString.substring(str, 2, 10)).toEqual("がとう");
             });
 
-            it("accepts a negative start value", () => {
+            it("treats a negative start index as 0", () => {
                 expect(UtfString.substring(str, -1, 1)).toEqual("あ");
                 expect(UtfString.substring(str, -2, 1)).toEqual("あ");
                 expect(UtfString.substring(str, -3, 1)).toEqual("あ");
@@ -101,7 +111,7 @@ describe("UtfString", () => {
                 expect(UtfString.substring(str, 2, 10)).toEqual("𤔥𤔦");
             });
 
-            it("accepts a negative start value", () => {
+            it("treats a negative start index as 0", () => {
                 expect(UtfString.substring(str, -1, 1)).toEqual("𤔣");
                 expect(UtfString.substring(str, -2, 1)).toEqual("𤔣");
                 expect(UtfString.substring(str, -3, 1)).toEqual("𤔣");
