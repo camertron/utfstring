@@ -600,7 +600,7 @@ export class UtfString {
     public static lastIndexOf(str: string, searchValue: string, start?: number): number {
         let index: number;
 
-        if (typeof start === "undefined") {
+        if (!isDefined(start)) {
             index = str.lastIndexOf(searchValue);
         } else {
             const startByteIndex = this.findByteIndex(str, start);
