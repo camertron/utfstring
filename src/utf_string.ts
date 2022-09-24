@@ -1,4 +1,4 @@
-import { isDefined, isRealNumber } from "./utils";
+import { isDefined, isNumber } from "./utils";
 
 /** Regular expression for matching surrogate pairs. */
 export const surrogatePairs = /[\uD800-\uDBFF][\uDC00-\uDFFF]/;
@@ -692,13 +692,13 @@ export class UtfString {
      * @returns The characters between the two given indices.
      */
     public static slice(str: string, start?: number, end?: number): string {
-        if (!isRealNumber(start)) {
+        if (!isNumber(start)) {
             start = 0;
         } else if (start < 0) {
             start = this.lengthOf(str) + start;
         }
 
-        if (!isRealNumber(end) || end >= this.lengthOf(str)) {
+        if (!isNumber(end) || end >= this.lengthOf(str)) {
             end = str.length;
         } else if (end < 0) {
             end = this.lengthOf(str) + end;
@@ -813,7 +813,7 @@ export class UtfString {
      * @returns The characters starting at the given start index up to the start index plus the given length.
      */
     public static substr(str: string, start?: number, length?: number): string {
-        if (!isRealNumber(start)) {
+        if (!isNumber(start)) {
             start = 0;
         }
 
@@ -845,7 +845,7 @@ export class UtfString {
      * @returns The characters starting at the given start index up to the end index.
      */
     public static substring(str: string, start?: number, end?: number): string {
-        if (!isRealNumber(start) || start < 0) {
+        if (!isNumber(start) || start < 0) {
             start = 0;
         }
 
