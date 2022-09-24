@@ -7,7 +7,7 @@ const regionalIndicatorPairs = /\uD83C[\uDDE6-\uDDFF]\uD83C[\uDDE6-\uDDFF]/;
  * Creates a regular expression that matches surrogate pairs.
  * @returns The regular expression that matches surrogate pairs.
  */
-export function createRegionalIndicatorAndSurrogatePairScanner(): RegExp {
+function createRegionalIndicatorAndSurrogatePairScanner(): RegExp {
     return new RegExp(regionalIndicatorPairs.source + "|" + surrogatePairs.source, "g");
 }
 
@@ -15,7 +15,7 @@ export function createRegionalIndicatorAndSurrogatePairScanner(): RegExp {
  * Creates a regular expression that matches regional indicator pairs and surrogate pairs.
  * @returns The regular expression that matches regional indicator pairs and surrogate pairs.
  */
-export function createUtfSafeCharScannerHandingRegionalIndicatorPairsAndSurrogatePairs(): RegExp {
+function createUtfSafeCharScannerHandingRegionalIndicatorPairsAndSurrogatePairs(): RegExp {
     const sources = new Array<string>();
 
     sources.push(regionalIndicatorPairs.source);
