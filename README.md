@@ -60,6 +60,8 @@ In the browser, `UtfString` will be available on `window` after you import the J
 
 ## Usage
 
+### UtfString object methods
+
 UtfString is a class that you can use to create UTF-safe string objects. These objects currently support the following operations:
 
 * `constructor(String str)` - Creates a new UTF-safe string object.
@@ -131,6 +133,8 @@ UtfString is a class that you can use to create UTF-safe string objects. These o
 * `trimRight()` - Same as `trimEnd`.
 
 * `trimStart()` - Removes whitespace from the beginning of the string and returns a new string, without modifying the original string.
+
+### UtfString static methods
 
 Additionally the class offers static methods in case you want to keep working with strings directly:
 
