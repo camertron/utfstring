@@ -46,9 +46,25 @@ describe("UtfString", () => {
             }
         });
 
-        it("works with a regular expression pattern", () => {
+        it("works with a UtfString parameter", () => {
+            const utfString = new UtfString("abc");
+            const matchResult = utfString.match(new UtfString("a"));
+
+            expect(matchResult?.length).toBe(1);
+
+            if (matchResult) {
+                expect(matchResult[0]).toEqual("a");
+            }
+        });
+
+        it("works with a regular expression parameter", () => {
             const utfString = new UtfString("abc");
             expect(utfString.match(/[a-c]/g)).toEqual(["a", "b", "c"]);
+        });
+
+        it("works with an object parameter that has a match method", () => {
+            const utfString = new UtfString("abc");
+            expect(utfString.match({ [Symbol.match]: (str) => str.match(/\w/g) })).toEqual(["a", "b", "c"]);
         });
     });
 });

@@ -23,6 +23,11 @@ describe("UtfString", () => {
             expectIteratedCharsToBe(utfString, "a", "b", "c");
         });
 
+        it("works with an empty string", () => {
+            const utfString = new UtfString("");
+            expectIteratedCharsToBe(utfString, ...[]);
+        });
+
         it("works with multi-byte characters", () => {
             const utfString = new UtfString("ありがとう"); // "arigatou"
             expectIteratedCharsToBe(utfString, "あ", "り", "が", "と", "う");

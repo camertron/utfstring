@@ -176,9 +176,10 @@ export class UtfString {
      * containing the results of that search, or null if no matches are found.
      * @param matcher An object that supports being matched against.
      */
-    // TODO: parameter "matcher" can be an object with a Match-method
-    //       https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match#parameters
-    public match(matcher: string | UtfString | RegExp): RegExpMatchArray | null {
+    public match(
+        matcher: string | UtfString | RegExp | { [Symbol.match](string: string): RegExpMatchArray | null },
+    ): RegExpMatchArray | null;
+    public match(matcher: string | UtfString): RegExpMatchArray | null {
         return this.toString().match(matcher instanceof UtfString ? matcher.toString() : matcher);
     }
 
