@@ -260,8 +260,10 @@ export class UtfString {
      *                  If omitted, a single-element array containing the entire string is returned.
      * @param limit A value used to limit the number of elements returned in the array.
      */
-    // TODO: parameter "separator" can be a RegExp or an object with a Splitter-Method
-    //       https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/split#parameters
+    public split(
+        seperator: string | UtfString | RegExp | { [Symbol.split](string: string, limit?: number): string[] },
+        limit?: number,
+    ): UtfString[];
     public split(seperator: string, limit?: number): UtfString[] {
         if (seperator === "") {
             return [...this].slice(0, limit);
