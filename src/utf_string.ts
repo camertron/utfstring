@@ -43,7 +43,7 @@ export class UtfString {
      * Iterator that enables the usage of for-of loops on instances of this class.
      * @returns An iterator that returns each character in the string separately.
      */
-    *[Symbol.iterator](): IterableIterator<UtfString> {
+    public *[Symbol.iterator](): IterableIterator<UtfString> {
         for (let i = 0; i < this.length; ++i) {
             yield this.charAt(i);
         }
@@ -255,7 +255,7 @@ export class UtfString {
     }
 
     /**
-     * Split a string into substrings using the specified separator and return them as an array.
+     * Splits a string into substrings using the specified separator and return them as an array.
      * @param separator The pattern describing where each split should occur.
      *                  If omitted, a single-element array containing the entire string is returned.
      * @param limit A value used to limit the number of elements returned in the array.
@@ -332,7 +332,8 @@ export class UtfString {
     }
 
     /**
-     * Converts all the alphabetic characters in the string to lower case.
+     * Returns a new string in which all the alphabetic characters are converted to lower case,
+     * without modifying the original string.
      * @return A new string object in which all alphabetic characters are in lower case.
      */
     public toLowerCase(): UtfString {
@@ -349,7 +350,8 @@ export class UtfString {
     }
 
     /**
-     * Converts all the alphabetic characters in the string to upper case.
+     * Returns a new string in which all the alphabetic characters are converted to upper case,
+     * without modifying the original string.
      * @return A new string object in which all alphabetic characters are in upper case.
      */
     public toUpperCase(): UtfString {
@@ -578,7 +580,7 @@ export class UtfString {
     }
 
     /**
-     * Concatenates the strings from the given array into a new string.
+     * Concatenates the strings from the given array into a new UTF-safe string object.
      * @param items The array of strings which are joined.
      * @param seperator The seperator string inserted between the concatenated strings.
      * @returns A new string object that contains the concatenated strings from the given array.
@@ -631,13 +633,9 @@ export class UtfString {
      * @param padString The string to pad the string with.
      * @returns A new string of the specified target length with the padding string applied at the end.
      */
-    public static padEnd(str: string, targetLength: number, padString?: string): string {
+    public static padEnd(str: string, targetLength: number, padString = " "): string {
         if (targetLength <= this.lengthOf(str)) {
             return str;
-        }
-
-        if (!padString) {
-            padString = " ";
         }
 
         let iPadStr = 0;
@@ -663,13 +661,9 @@ export class UtfString {
      * @param padString The string to pad the string with.
      * @returns A new string of the specified target length with the padding string applied at the start.
      */
-    public static padStart(str: string, targetLength: number, padString?: string): string {
+    public static padStart(str: string, targetLength: number, padString = " "): string {
         if (targetLength <= this.lengthOf(str)) {
             return str;
-        }
-
-        if (!padString) {
-            padString = " ";
         }
 
         let iPadStr = 0;

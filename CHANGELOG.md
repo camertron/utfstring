@@ -6,7 +6,7 @@
 * UtfString.fromCharCode is now called UtfString.stringFromCharCode.
 
 ## Changes
-* UtfString is now a class that can be instantiated and has its own set of string methods.
+* UtfString is now a class that can be instantiated and has its own set of string methods. (#9, @krisztianb)
 * UtfVisualString is now a class that can be instantiated and has its own set of string methods.
 
 ## Added
