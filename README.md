@@ -186,11 +186,11 @@ Additionally the class offers static methods in case you want to keep working wi
 
 Certain characters in the Unicode standard are meant to be combined by display systems, but are represented by multiple code points. A good example are the so-called regional indicators. By themselves, regional indicators u1F1EB (regional indicator symbol letter F) and u1F1F7 (regional indicator symbol letter R) don't mean much, but combined they form the French flag: 🇫🇷.
 
-Since regional indicators are semantically individual Unicode code points and because utfstring is a dependency of other Unicode-aware libraries, it doesn't make sense for utfstring to treat two regional indicators as a single character by default. That said, it can be useful to treat them as such from a display or layout perspective. In order to support both scenarios, two implementations are necessary. The first and default implementation is available via the instructions above. For visual grapheme clustering such as the grouping of regional indicators, use the class `UtfVisualString`. Display-aware versions of all the functions described above are available. The difference can be seen by way of the `lengthOf` function:
+Since regional indicators are semantically individual Unicode code points and because utfstring is a dependency of other Unicode-aware libraries, it doesn't make sense for utfstring to treat two regional indicators as a single character by default. That said, it can be useful to treat them as such from a display or layout perspective. In order to support both scenarios, two implementations are necessary. The first and default implementation is available via the instructions above. For visual grapheme clustering such as the grouping of regional indicators, use the class `UtfVisualString`. Display-aware versions of all the functions described above are available. The difference can be seen by way of the `lengthOf` method:
 
 ```javascript
-UtfVisualString.length("🇫🇷");  // 1
-UtfString.length("🇫🇷");        // 2
+UtfVisualString.lengthOf("🇫🇷");  // 1
+UtfString.lengthOf("🇫🇷");        // 2
 ```
 
 ## Running Tests
