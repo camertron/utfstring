@@ -35,8 +35,14 @@ export class UtfString {
      * Creates a new UTF-safe string object.
      * @param unsafeString The unsafe string.
      */
-    public constructor(unsafeString: string) {
-        this.unsafeString = unsafeString;
+    public constructor(unsafeString: unknown) {
+        if (!isDefined(unsafeString)) {
+            this.unsafeString = "";
+        } else if (unsafeString instanceof UtfString) {
+            this.unsafeString = unsafeString.toString();
+        } else {
+            this.unsafeString = String(unsafeString);
+        }
     }
 
     /**
