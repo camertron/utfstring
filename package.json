@@ -1,6 +1,6 @@
 {
     "name": "utfstring",
-    "version": "2.1.0",
+    "version": "3.0.0",
     "description": "UTF-safe string operations",
     "repository": {
         "type": "git",
@@ -12,8 +12,8 @@
         "utf-16",
         "utf"
     ],
-    "main": "dist/utfstring.js",
-    "types": "dist/utfstring.d.ts",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
     "files": [
         "/dist"
     ],
@@ -24,16 +24,19 @@
     },
     "homepage": "https://github.com/camertron/utfstring",
     "devDependencies": {
-        "jasmine-node": "3.0.0",
+        "@types/mocha": "9.1.1",
+        "expect": "29.0.3",
+        "mocha": "10.0.0",
+        "prettier": "2.7.1",
         "rimraf": "3.0.2",
-        "typescript": "4.7.4",
-        "utfstring": "./"
+        "ts-node": "10.9.1",
+        "typescript": "4.8.3",
+        "webpack": "5.74.0",
+        "webpack-cli": "4.10.0"
     },
     "scripts": {
-        "clean": "rimraf dist",
-        "build": "npx tsc",
-        "clean-build": "npm run clean && npm run build",
-        "test": "npx jasmine-node test"
+        "format": "prettier --check .",
+        "build": "rimraf dist browser && tsc && webpack",
+        "test": "mocha -r ts-node/register -reporter min 'test/**/*.ts'"
     }
 }
-

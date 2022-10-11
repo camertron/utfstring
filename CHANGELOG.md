@@ -1,3 +1,22 @@
+# 3.0.0
+## BREAKING CHANGES
+* UtfString.visual has been moved to a separate class called UtfVisualString.
+* Changed interface of substring method to use an end index parameter instead of a length parameter to match the interface of the String.substring method.
+* UtfString.length is now called UtfString.lengthOf.
+* UtfString.fromCharCode is now called UtfString.stringFromCharCode.
+
+## Changes
+* UtfString is now a class that can be instantiated and has its own set of string methods. (#9, @krisztianb)
+* UtfVisualString is now a class that can be instantiated and has its own set of string methods.
+
+## Added
+* New method UtfString.fromBytes: Converts an array of UTF-16 bytes into a UTF-safe string object.
+* New method UtfString.fromCharCode: Returns a UTF-safe string object for the given Unicode codepoint.
+* New method UtfString.fromCodePoints: Converts an array of codepoints into a UTF-safe string object.
+* New method UtfString.join: Concatenates the strings from the given array into a new string object.
+* New method UtfString.padEnd: Creates a new string by padding the string at the end with a given string.
+* New method UtfString.padStart: Creates a new string by padding the string at the beginning with a given string.
+
 # 2.1.0
 * Port code to TypeScript and add comments (#8, @krisztianb).
 

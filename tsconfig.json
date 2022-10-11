@@ -1,12 +1,12 @@
 {
     "compilerOptions": {
-        "lib": ["ES2015", "DOM"],
+        "lib": ["ES2015"],
         "module": "commonjs",
         "outDir": "dist",
         "strict": true,
         "noImplicitOverride": true,
         "exactOptionalPropertyTypes": true,
-        "target": "es5",
+        "target": "ES2015",
         "declaration": true,
         "esModuleInterop": true
     },
