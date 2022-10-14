@@ -37,6 +37,7 @@
     "scripts": {
         "format": "prettier --check .",
         "build": "rimraf dist browser && tsc && webpack",
-        "test": "mocha -r ts-node/register -reporter min 'test/**/*.ts'"
+        "test": "mocha -r ts-node/register -reporter min 'test/**/*.ts'",
+        "prepublishOnly": "npm test && npm run build"
     }
 }
