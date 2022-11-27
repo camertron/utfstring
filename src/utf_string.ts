@@ -31,6 +31,9 @@ export class UtfString {
     /** The unsafe string for which the object is providing a UTF-safe interface. */
     private readonly unsafeString: string;
 
+    /** Prevent accidental usage of index signature in TypeScript code. */
+    [index: number]: never;
+
     /**
      * Creates a new UTF-safe string object.
      * @param unsafeString The unsafe string.
