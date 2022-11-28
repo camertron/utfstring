@@ -32,7 +32,7 @@ export class UtfString {
     private readonly unsafeString: string;
 
     /** Prevent accidental usage of index signature in TypeScript code. */
-    [index: number]: never;
+    [index: number]: undefined;
 
     /**
      * Creates a new UTF-safe string object.
