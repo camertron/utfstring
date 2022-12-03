@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body>
+        <script src="../../browser/utfstring.js"></script>
+
+        <div>
+            Here you should see the number two: <span id="testLength"></span>
+        </div>
+
+        <div>
+            Here you should see two Emojis: <span id="testIndexer"></span>
+        </div>
+
+        <script>
+            var str = new UtfString("😎👍");
+
+            document.getElementById("testLength").textContent = str.length;
+            document.getElementById("testIndexer").textContent = str[0] + str[1];
+        </script>
+    </body>
+</html>

@@ -1,6 +1,6 @@
 {
     "name": "utfstring",
-    "version": "3.0.1",
+    "version": "3.1.0",
     "description": "UTF-safe string operations",
     "repository": {
         "type": "git",
@@ -24,15 +24,16 @@
     },
     "homepage": "https://github.com/camertron/utfstring",
     "devDependencies": {
-        "@types/mocha": "9.1.1",
-        "expect": "29.0.3",
-        "mocha": "10.0.0",
-        "prettier": "2.7.1",
+        "@types/node": "14.14.31",
+        "@types/mocha": "10.0.1",
+        "expect": "29.3.1",
+        "mocha": "10.1.0",
+        "prettier": "2.8.0",
         "rimraf": "3.0.2",
         "ts-node": "10.9.1",
-        "typescript": "4.8.3",
-        "webpack": "5.74.0",
-        "webpack-cli": "4.10.0"
+        "typescript": "4.9.3",
+        "webpack": "5.75.0",
+        "webpack-cli": "5.0.0"
     },
     "scripts": {
         "format": "prettier --check .",
