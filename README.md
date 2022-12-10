@@ -66,9 +66,11 @@ UtfString is a class that you can use to create UTF-safe string objects. These o
 
 * `constructor(String str)` - Creates a new UTF-safe string object.
 
+* `[Number index]` - Indexer: returns the character at the given index from the string.
+
 * `*[Symbol.iterator]` - Allows you to iterate over the characters of the string using a `for-of` loop.
 
-* `charAt(Integer index)` - Returns the character at the given index from the string.
+* `charAt(Integer index)` - Same as using the indexer.
 
 * `charCodeAt(Integer index)` - Returns the Unicode codepoint at the given index.
 

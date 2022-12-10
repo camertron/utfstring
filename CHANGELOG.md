@@ -1,3 +1,7 @@
+# 3.1.0
+## Added
+* Index signature for UtfString and UtfVisualString classes (@krisztianb).
+
 # 3.0.0
 ## BREAKING CHANGES
 * UtfString.visual has been moved to a separate class called UtfVisualString.

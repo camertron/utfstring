@@ -31,6 +31,9 @@ export class UtfString {
     /** The unsafe string for which the object is providing a UTF-safe interface. */
     private readonly unsafeString: string;
 
+    /** Index signature: implemented via Proxy returned by the constructor. */
+    [index: number]: UtfString;
+
     /**
      * Creates a new UTF-safe string object.
      * @param unsafeString The unsafe string.
@@ -43,6 +46,14 @@ export class UtfString {
         } else {
             this.unsafeString = String(unsafeString);
         }
+
+        return new Proxy(this, {
+            get: (obj, key) => {
+                return typeof key === "string" && Number.isInteger(Number(key))
+                    ? obj.charAt(parseInt(key, 0))
+                    : (obj as any)[key];
+            },
+        });
     }
 
     /**
