@@ -52,5 +52,9 @@ describe("UtfString", () => {
             expect(UtfString.lastIndexOf("ありがとうり", "り", 4)).toEqual(1);
             expect(UtfString.lastIndexOf("𤔣𤔤𤔥𤔤𤔦", "𤔤", 2)).toEqual(1);
         });
+
+        it("returns -1 if the search value is not found before the given start parameter", () => {
+            expect(UtfString.lastIndexOf("abc", "c", 0)).toEqual(-1);
+        });
     });
 });

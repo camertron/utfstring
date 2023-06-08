@@ -591,6 +591,10 @@ export class UtfString {
      */
     public static indexOf(str: string, searchValue: string, start = 0): number {
         const startByteIndex = this.findByteIndex(str, start);
+        if (startByteIndex < 0) {
+            return -1;
+        }
+
         const index = str.indexOf(searchValue, startByteIndex);
 
         return index < 0 ? -1 : this.findCharIndex(str, index);
@@ -626,6 +630,10 @@ export class UtfString {
             index = str.lastIndexOf(searchValue);
         } else {
             const startByteIndex = this.findByteIndex(str, start);
+            if (startByteIndex < 0) {
+                return -1;
+            }
+
             index = str.lastIndexOf(searchValue, startByteIndex);
         }
 

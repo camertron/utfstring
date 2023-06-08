@@ -57,5 +57,10 @@ describe("UtfString", () => {
             expect(utfString.indexOf(new UtfString("b"))).toEqual(1);
             expect(utfString.indexOf(new UtfString("c"))).toEqual(2);
         });
+
+        it("returns -1 if the search value is not found after the given start parameter", () => {
+            const utfString = new UtfString("abc");
+            expect(utfString.indexOf("c", 3)).toEqual(-1);
+        });
     });
 });

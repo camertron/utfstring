@@ -1,3 +1,7 @@
+# 3.1.1
+* Fixes issue causing incorrect values to be returned from `indexOf`.
+  - For example, `new UtfString("This is a Text!").indexOf("t", 15)` should return `-1` but returned `13`.
+
 # 3.1.0
 ## Added
 * Index signature for UtfString and UtfVisualString classes (@krisztianb).
