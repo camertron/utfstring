@@ -1,3 +1,6 @@
+# 3.1.2
+* Add missing start parameter to `includes` method (@krisztianb).
+
 # 3.1.1
 * Fixes issue causing incorrect values to be returned from `indexOf`.
   - For example, `new UtfString("This is a Text!").indexOf("t", 15)` should return `-1` but returned `13`.
