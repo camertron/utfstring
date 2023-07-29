@@ -40,11 +40,36 @@ describe("UtfString", () => {
             expect(utfString.includes("d")).toBeFalsy();
         });
 
+        it("respects the start parameter", () => {
+            const utfString1 = new UtfString("abcabc");
+            expect(utfString1.includes("b", 0)).toBeTruthy();
+            expect(utfString1.includes("b", 2)).toBeTruthy();
+
+            const utfString2 = new UtfString("ありがとうり");
+            expect(utfString2.includes("り", 0)).toBeTruthy();
+            expect(utfString2.includes("り", 2)).toBeTruthy();
+
+            const utfString3 = new UtfString("𤔣𤔤𤔥𤔤𤔦");
+            expect(utfString3.includes("𤔤", 0)).toBeTruthy();
+            expect(utfString3.includes("𤔤", 2)).toBeTruthy();
+        });
+
         it("works with a UtfString parameter", () => {
             const utfString = new UtfString("abc");
             expect(utfString.includes(new UtfString("a"))).toBeTruthy();
             expect(utfString.includes(new UtfString("b"))).toBeTruthy();
             expect(utfString.includes(new UtfString("d"))).toBeFalsy();
+        });
+
+        it("returns false if the search value is not found after the given start parameter", () => {
+            const utfString1 = new UtfString("abc");
+            expect(utfString1.includes("b", 2)).toBeFalsy();
+
+            const utfString2 = new UtfString("ありが");
+            expect(utfString2.includes("り", 2)).toBeFalsy();
+
+            const utfString3 = new UtfString("𤔣𤔤𤔥");
+            expect(utfString3.includes("𤔤", 2)).toBeFalsy();
         });
     });
 });

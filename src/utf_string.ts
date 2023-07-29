@@ -151,10 +151,11 @@ export class UtfString {
     /**
      * Checks if the search value is within the string.
      * @param searchValue The value to search.
+     * @param start Optional start offset for the search.
      * @returns True if the search value was found in the string, false otherwise.
      */
-    public includes(searchValue: string | UtfString): boolean {
-        return this.indexOf(searchValue) !== -1;
+    public includes(searchValue: string | UtfString, start = 0): boolean {
+        return this.indexOf(searchValue, start) !== -1;
     }
 
     /**
