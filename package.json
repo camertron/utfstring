@@ -27,7 +27,7 @@
         "@types/node": "14.14.31",
         "@types/mocha": "10.0.1",
         "expect": "29.3.1",
-        "mocha": "10.1.0",
+        "mocha": "10.8.2",
         "prettier": "2.8.0",
         "rimraf": "3.0.2",
         "ts-node": "10.9.1",
